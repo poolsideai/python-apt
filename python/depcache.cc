@@ -252,6 +252,19 @@ static PyObject *PkgDepCacheGetCandidateVer(PyObject *Self,PyObject *Args)
    return CandidateObj;
 }
 
+static PyObject *PkgDepCacheGetDepState(PyObject *Self,PyObject *Args)
+{
+   pkgDepCache *depcache = GetCpp<pkgDepCache *>(Self);
+   PyObject *PackageObj;
+   if (PyArg_ParseTuple(Args,"O!",&PyPackage_Type,&PackageObj) == 0)
+      return 0;
+
+   pkgCache::PkgIterator &Pkg = GetCpp<pkgCache::PkgIterator>(PackageObj);
+   pkgDepCache::StateCache & State = (*depcache)[Pkg];
+
+   return MkPyNumber(State.DepState);
+}
+
 static PyObject *PkgDepCacheUpgrade(PyObject *Self,PyObject *Args)
 {
    bool res;
@@ -661,6 +674,12 @@ static PyMethodDef PkgDepCacheMethods[] =
    {"marked_downgrade",PkgDepCacheMarkedDowngrade,METH_VARARGS,
     "marked_downgrade(pkg: apt_pkg.Package) -> bool\n\n"
     "Check whether the package is marked for downgrade."},
+
+   // Internal
+   {"get_dep_state", PkgDepCacheGetDepState,METH_VARARGS,
+    "get_dep_state(pkg: apt_pkg.Package) -> int\n\n"
+    "Return the internal dep_state for the given pkg."},
+   
    // Action
    {"commit", PkgDepCacheCommit, METH_VARARGS,
     "commit(acquire_progress, install_progress)\n\n"

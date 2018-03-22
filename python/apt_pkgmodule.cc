@@ -930,6 +930,20 @@ extern "C" void initapt_pkg()
    PyDict_SetItemString(PyDependency_Type.tp_dict, "TYPE_ENHANCES",
                         MkPyNumber(pkgCache::Dep::Enhances));
 
+   // DepCache constants
+   PyDict_SetItemString(PyDepCache_Type.tp_dict, "DEP_NOW",
+                        MkPyNumber(pkgDepCache::DepNow));
+   PyDict_SetItemString(PyDepCache_Type.tp_dict, "DEP_INSTALL",
+                        MkPyNumber(pkgDepCache::DepInstall));
+   PyDict_SetItemString(PyDepCache_Type.tp_dict, "DEP_C_VER",
+                        MkPyNumber(pkgDepCache::DepCVer));
+   PyDict_SetItemString(PyDepCache_Type.tp_dict, "DEP_G_NOW",
+                        MkPyNumber(pkgDepCache::DepGNow));
+   PyDict_SetItemString(PyDepCache_Type.tp_dict, "DEP_G_INSTALL",
+                        MkPyNumber(pkgDepCache::DepGInstall));
+   PyDict_SetItemString(PyDepCache_Type.tp_dict, "DEP_GC_VER",
+                        MkPyNumber(pkgDepCache::DepGCVer));
+
 
    // PackageManager constants
    PyDict_SetItemString(PyPackageManager_Type.tp_dict, "RESULT_COMPLETED",
