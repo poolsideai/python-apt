@@ -1405,6 +1405,55 @@ class Package(object):
         """Return True if the installed package is broken."""
         return self._pcache._depcache.is_now_broken(self._pkg)
 
+    def show_inst_broken(self):
+        # type: () -> str
+        if not self.is_inst_broken:
+            return ""
+        depends = self._pcache._depcache.get_inst_ver(self._pkg).depends_list
+        missing = []
+        for type_ in ["PreDepends", "Depends"]:
+            for or_group in depends.get(type_, []):
+                or_group_missing = []
+                for dep in or_group:
+                    target_pkg = dep.target_pkg
+                    dep_state = self._pcache._depcache.get_dep_state(target_pkg)
+                    if (dep_state & self._pcache._depcache.DEP_G_INSTALL) == self._pcache._depcache.DEP_G_INSTALL:
+                        continue
+                    name = target_pkg.get_fullname()
+                    s = ""
+                    if dep.target_ver:
+                        s = "%s: %s (%s %s)" % (
+                            type_, name, dep.comp_type, dep.target_ver)
+                    else:
+                        s = "%s: %s" % (type_, name)
+                    ver = self._pcache._depcache.get_inst_ver(target_pkg)
+                    if ver:
+                        s += " but %s is to be installed" % ver.ver_str
+                    else:
+                        if not self._pcache._depcache.get_candidate_ver(target_pkg):
+                            if target_pkg.provides_list:
+                                s += " but it is a virtual package"
+                            else:
+                                s += " but is not installable"
+                        else:
+                            s += " but it is not going to be installed"
+                    or_group_missing.append(s)
+                if len(or_group_missing) > 0:
+                    missing.append(or_group_missing)
+        # format missing
+        s = ""
+        s += " %s\n" % self.fullname
+        for or_group_missing in missing:
+            for i, elm in enumerate(or_group_missing):
+                if i == 0:
+                    s += "  %s" % elm
+                else:
+                    s += "    %s" % elm
+                if i < len(or_group_missing)-1:
+                    s += " or"
+                s += "\n"
+        return s
+
     @property
     def has_config_files(self):
         # type: () -> bool

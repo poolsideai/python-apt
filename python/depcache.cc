@@ -252,6 +252,27 @@ static PyObject *PkgDepCacheGetCandidateVer(PyObject *Self,PyObject *Args)
    return CandidateObj;
 }
 
+static PyObject *PkgDepCacheGetInstVer(PyObject *Self,PyObject *Args)
+{
+   pkgDepCache *depcache = GetCpp<pkgDepCache *>(Self);
+   PyObject *PackageObj;
+   PyObject *InstVerObj;
+   if (PyArg_ParseTuple(Args,"O!",&PyPackage_Type,&PackageObj) == 0)
+      return 0;
+
+   pkgCache::PkgIterator &Pkg = GetCpp<pkgCache::PkgIterator>(PackageObj);
+   pkgDepCache::StateCache & State = (*depcache)[Pkg];
+   pkgCache::VerIterator I = State.InstVerIter(*depcache);
+
+   if(I.end()) {
+      Py_INCREF(Py_None);
+      return Py_None;
+   }
+   InstVerObj = CppPyObject_NEW<pkgCache::VerIterator>(PackageObj,&PyVersion_Type,I);
+
+   return InstVerObj;
+}
+
 static PyObject *PkgDepCacheGetDepState(PyObject *Self,PyObject *Args)
 {
    pkgDepCache *depcache = GetCpp<pkgDepCache *>(Self);
@@ -600,6 +621,10 @@ static PyMethodDef PkgDepCacheMethods[] =
     "but walks also down the dependency tree and checks if it is required "
     "to set the candidate of the dependency to a version from the given "
     "release string 'rel', too."},
+   {"get_inst_ver",PkgDepCacheGetInstVer,METH_VARARGS,
+    "get_inst_ver(pkg: apt_pkg.Package) -> apt_pkg.Version\n\n"
+    "Return the 'inst' version for the package. The version that apt will "
+    "try to install."},
 
    // global cache operations
    {"upgrade",PkgDepCacheUpgrade,METH_VARARGS,

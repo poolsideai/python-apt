@@ -244,6 +244,21 @@ class TestAptCache(testcommon.TestCase):
         arches = apt_pkg.get_architectures()
         self.assertTrue(main_arch in arches)
 
+    @if_sources_list_is_readable
+    def test_show_broken(self):
+        cache = apt.Cache()
+        pkg = cache["apt"]
+        pkg.mark_install()
+        broken=pkg.show_inst_broken()
+        self.assertEqual(broken, "")
+
+        pkg = cache["konsole:i386"]
+        with self.assertRaises(SystemError):
+            pkg.mark_install()
+        broken=pkg.show_inst_broken()
+        self.assertEqual(broken, "xxx")
+       
+
 
 if __name__ == "__main__":
     unittest.main()
