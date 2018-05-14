@@ -561,8 +561,9 @@ class Cache(object):
         pm = apt_pkg.PackageManager(self._depcache)
         fetcher = apt_pkg.Acquire(fetch_progress)
         while True:
-            # fetch archives first
-            res = self._fetch_archives(fetcher, pm)
+            if self.install_count > 0:
+                # fetch archives first
+                res = self._fetch_archives(fetcher, pm)
 
             # then install
             res = self.install_archives(pm, install_progress)
