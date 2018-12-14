@@ -486,6 +486,16 @@ def _lsb_release():
     return result
 
 
+def _get_codename():
+    """
+    Read /etc/debian_version to get codename of debian.
+    All Debian derives should have this file.
+    """
+    with open('/etc/debian_version', 'r') as debian_version:
+        return debian_version.read().split("/")[0]
+    return 'n/a'
+
+
 def _system_image_channel():
     """Get the current channel from system-image-cli -i if possible."""
     from subprocess import Popen, PIPE
@@ -607,6 +617,8 @@ def get_distro(id=None, codename=None, description=None, release=None,
         return UbuntuRTMDistribution(
             id, codename, description, release, is_like)
     elif id == "Debian":
+        if 'n/a' == codename or 0 == len(codename):
+            codename = _get_codename()
         return DebianDistribution(id, codename, description, release, is_like)
     else:
         return Distribution(id, codename, description, release, is_like)
