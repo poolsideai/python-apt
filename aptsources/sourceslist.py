@@ -384,6 +384,9 @@ class SourcesList(object):
 
     def load(self, file):
         """ (re)load the current sources """
+        if not os.path.exists(file):
+            return
+
         try:
             with open(file, "r") as f:
                 for line in f:
