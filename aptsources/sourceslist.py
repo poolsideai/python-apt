@@ -492,71 +492,20 @@ class SourcesList(object):
         """ equal operator for two sources.list entries """
         return all([e in other for e in self]) and all([e in self for e in other])
 
-    def add(self, type, uri, dist, orig_comps, comment="", pos=-1, file=None,
-            architectures=[]):
-        """
-        Add a new source to the sources.list.
-        The method will search for existing matching repos and will try to
-        reuse them as far as possible
-        """
-
-        type = type.strip()
-        disabled = type.startswith("#")
-        if disabled:
-            type = type[1:].lstrip()
-        architectures = set(architectures)
-        # create a working copy of the component list so that
-        # we can modify it later
-        comps = orig_comps[:]
-        sources = self.__find(lambda s: set(s.architectures) == architectures,
-                              disabled=disabled, invalid=False, type=type,
-                              uri=uri, dist=dist)
-        # check if we have this source already in the sources.list
-        for source in sources:
-            for new_comp in comps:
-                if new_comp in source.comps:
-                    # we have this component already, delete it
-                    # from the new_comps list
-                    del comps[comps.index(new_comp)]
-                    if len(comps) == 0:
-                        return source
-
-        sources = self.__find(lambda s: set(s.architectures) == architectures,
-                              invalid=False, type=type, uri=uri, dist=dist)
-        for source in sources:
-            if source.disabled == disabled:
-                # if there is a repo with the same (disabled, type, uri, dist)
-                # just add the components
-                if set(source.comps) != set(comps):
-                    source.comps = uniq(source.comps + comps)
-                return source
-            elif source.disabled and not disabled:
-                # enable any matching (type, uri, dist), but disabled repo
-                if set(source.comps) == set(comps):
-                    source.disabled = False
-                    return source
-        # there isn't any matching source, so create a new line and parse it
-        parts = [
-            "#" if disabled else "",
-            type,
-            ("[arch=%s]" % ",".join(architectures)) if architectures else "",
-            uri,
-            dist,
-        ]
-        parts.extend(comps)
-        if comment:
-            parts.append("#" + comment)
-        line = " ".join(part for part in parts if part) + "\n"
-
-        new_entry = SourceEntry(line)
-        if file is not None:
-            new_entry.file = file
-        self.matcher.match(new_entry)
-        if pos < 0:
-            self.list.append(new_entry)
+    def add(self, type, uri, dist, comps, comment="", pos=-1, file=None,
+            architectures=[], disabled=False):
+        """ Create a new entry with the provided parameters and add it to our list """
+        if pos >= 0 and pos < len(self.list):
+            before = self.list[pos]
         else:
-            self.list.insert(pos, new_entry)
-        return new_entry
+            before = None
+
+        line = SourceEntry.create_line(disabled=disabled, type=type, uri=uri,
+                                       dist=dist, comps=comps, comment=comment,
+                                       architectures=architectures)
+        new_entry = SourceEntry(line, file=file)
+        collapsed = CollapsedSourcesList(self)
+        return collapsed.add_entry(new_entry, before=before)
 
     def remove(self, source_entry):
         """ remove the specified entry from the sources.list """
