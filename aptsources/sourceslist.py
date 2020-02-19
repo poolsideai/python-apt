@@ -294,6 +294,146 @@ class SourceEntry(object):
         return "%s\n" % line
 
 
+class MergedSourceEntry(SourceEntry):
+    """ A SourceEntry representing one or more identical SourceEntries
+
+    The SourceEntries this represents are identical except for the components
+    they contain.  This will contain all the contained entries' components.
+
+    If all components are removed, this will still act as a normal SourceEntry
+    without any components, but all corresponding real SourceEntries will be
+    removed from the SourcesList.
+
+    This may contain multiple SourceEntries that overlap components (e.g.
+    two entries that both contain 'main' component), however once any
+    changes are made to the set of comps, duplicates will be removed.
+    """
+    def __init__(self, entry, sourceslist):
+        self._initialized = False
+        super(MergedSourceEntry, self).__init__(str(entry), file=entry.file)
+        self._initialized = True
+
+        self._sourceslist = sourceslist
+        self._entries = [entry]
+
+    def match(self, other):
+        """ Check if this is equal to other, ignoring comps """
+        if self.invalid:
+            # Never match an invalid entry; those are full-line comments
+            # and whitespace and should be left as-is
+            return False
+        return self._replace(comps=[]) == other._replace(comps=[])
+
+    def _append(self, entry):
+        """ Append entry
+
+        This should be called only with an entry that is equal to us,
+        besides comps.  The new entry may contain comps already in
+        other entries we contain, but any modification of our comps
+        will remove all duplicate comps.
+        """
+        self._entries.append(entry)
+
+    def get_entry(self, comps, add=False, isolate=False):
+        """ Get single SourceEntry with comps
+
+        This moves all the components into a single entry in our entries
+        list, and returns that entry.
+
+        If add is False, this will return None if we do not already
+        contain all the requested comps; otherwise this adds any
+        new comps.
+
+        If isolate is False, the entry returned may contain more
+        components than those requested in comps.  If isolate is True,
+        this moves any excess components into a new entry, located
+        immediately after the returned entry.
+
+        If any of the components already exist in one of our entries,
+        it is used to move all the components to; otherwise the first
+        entry in our list is used.
+
+        Any of our entries that has all its components moved (thus has
+        no components left) will be removed from our entries list and
+        removed from our sourceslist.
+
+        If called with no comps this will return our first SourceEntry.
+        If we contain no SourceEntries (because we contain no components),
+        this will return None if called with no comps.
+        """
+        comps = set(copy(comps))
+
+        if not set(self.comps) >= comps and not add:
+            # we don't contain all requested comps
+            return None
+
+        for e in self._entries:
+            if set(e.comps) & comps:
+                # we want to move requested comps to e
+                comps -= set(e.comps)
+                # remove other comps from other entries
+                self.comps = list(set(self.comps) - comps)
+                # add them all to this entry
+                e.comps = list(set(e.comps) | comps)
+                break
+        else:
+            # all comps are new to us (or no comps requested),
+            # add them to our first entry
+            self.comps = list(set(self.comps) | comps)
+            try:
+                e = self._entries[0]
+            except KeyError:
+                # we are empty, return None
+                return None
+
+        if isolate and comps and set(e.comps) > comps:
+            newe = e._replace(comps=list(set(e.comps) - comps))
+            e.comps = list(comps)
+            newi = self._sourceslist.list.index(e) + 1
+            self._sourceslist.list.insert(newi, newe)
+            self._append(newe)
+
+        return e
+
+    @property
+    def comps(self):
+        c = set()
+        for e in self._entries:
+            c |= set(e.comps)
+        return list(c)
+
+    @comps.setter
+    def comps(self, comps):
+        if not self._initialized:
+            return
+
+        comps = set(copy(comps))
+        if comps == set(self.comps):
+            # no change needed
+            return
+
+        for e in self._entries:
+            e.comps = list(set(e.comps) & comps)
+            comps -= set(e.comps)
+
+        if comps:
+            if not self._entries:
+                self._entries = [copy(self)]
+                self._sourceslist.list.append(self._entries[0])
+            self._entries[0].comps = list(set(self._entries[0].comps) | comps)
+
+        for e in list(self._entries):
+            if not e.comps:
+                self._entries.remove(e)
+                self._sourceslist.list.remove(e)
+
+    def __setattribute__(self, name, value):
+        if not (name == 'comps' or name.startswith('_')):
+            for e in self._entries:
+                setattr(e, name, value)
+        super(MergedSourceEntry, self).__setattribute__(name, value)
+
+
 class NullMatcher(object):
     """ a Matcher that does nothing """
 
