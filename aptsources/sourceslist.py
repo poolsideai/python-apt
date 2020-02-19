@@ -457,6 +457,7 @@ class SourcesList(object):
     def refresh(self):
         """ update the list of known entries """
         self.list = []
+        self._files = set()
         # read sources.list
         file = apt_pkg.config.find_file("Dir::Etc::sourcelist")
         self.load(file)
@@ -541,32 +542,45 @@ class SourcesList(object):
                 for line in f:
                     source = SourceEntry(line, file)
                     self.list.append(source)
+            self._files.add(file)
         except Exception:
             logging.warning("could not open file '%s'\n" % file)
 
-    def save(self):
-        """ save the current sources """
-        files = {}
-        # write an empty default config file if there aren't any sources
-        if len(self.list) == 0:
-            path = apt_pkg.config.find_file("Dir::Etc::sourcelist")
+    def save(self, remove=False):
+        """ save the current sources
+
+        By default, this will NOT remove any files that we no longer
+        have entries for; those files will not be modified at all.
+
+        If 'remove' is True, any files that we initially parsed, but
+        no longer have any entries for, will be removed.
+        """
+        files = set(e.file for e in self.list)
+
+        for filename in files:
+            with open(filename, "w") as f:
+                for source in [s for s in self.list if s.file == filename]:
+                    f.write(source.str())
+
+        if remove:
+            # remove any files that are now empty
+            for filename in self._files - files:
+                try:
+                    os.remove(filename)
+                except (OSError, IOError):
+                    pass
+            self._files = files
+
+        # re-create empty sources.list if needed
+        sourcelist = apt_pkg.config.find_file("Dir::Etc::sourcelist")
+        if not sourcelist in files:
             header = (
                 "## See sources.list(5) for more information, especialy\n"
                 "# Remember that you can only use http, ftp or file URIs\n"
                 "# CDROMs are managed through the apt-cdrom tool.\n")
 
-            with open(path, "w") as f:
+            with open(sourcelist, "w") as f:
                 f.write(header)
-            return
-
-        try:
-            for source in self.list:
-                if source.file not in files:
-                    files[source.file] = open(source.file, "w")
-                files[source.file].write(source.str())
-        finally:
-            for f in files:
-                files[f].close()
 
     def check_for_relations(self, sources_list):
         """get all parent and child channels in the sources list"""
