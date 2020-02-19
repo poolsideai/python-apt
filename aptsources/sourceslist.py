@@ -476,15 +476,6 @@ class SourcesList(object):
         for entry in self.list:
             yield entry
 
-    def __find(self, *predicates, **attrs):
-        uri = attrs.pop('uri', None)
-        for source in self.list:
-            if uri and uri.rstrip('/') != source.uri.rstrip('/'):
-                continue
-            if (all(getattr(source, key) == attrs[key] for key in attrs) and
-                    all(predicate(source) for predicate in predicates)):
-                yield source
-
     def __len__(self):
         """ calculate len of self.list """
         return len(self.list)
