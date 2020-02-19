@@ -143,11 +143,16 @@ class SourceEntry(object):
 
     def __eq__(self, other):
         """ equal operator for two sources.list entries """
+        if self.invalid or other.invalid:
+            return (self.invalid == other.invalid and
+                    self.line == other.line)
         return (self.disabled == other.disabled and
                 self.type == other.type and
+                set(self.architectures) == set(other.architectures) and
+                self.trusted == other.trusted and
                 self.uri.rstrip('/') == other.uri.rstrip('/') and
                 self.dist == other.dist and
-                self.comps == other.comps)
+                set(self.comps) == set(other.comps))
 
     def mysplit(self, line):
         """ a split() implementation that understands the sources.list
