@@ -34,6 +34,7 @@ import time
 
 import apt_pkg
 from .distinfo import DistInfo
+from .distro import get_distro
 #from apt_pkg import gettext as _
 
 
@@ -85,6 +86,41 @@ def uniq(s):
 
 class SourceEntry(object):
     """ single sources.list entry """
+
+    @classmethod
+    def create_line(cls, uri, disabled=False, type=get_distro().binary_type,
+                    dist=get_distro().codename, comps=[], architectures=[],
+                    trusted=None, comment=None):
+        """ Create a line from the given parts.
+
+        The 'uri' parameter is mandatory; the rest will be filled with defaults
+        if not set.
+        """
+        if type.startswith("#"):
+            # backwards compatibility; please just use disabled param
+            disabled = True
+            type = type.lstrip("# ")
+
+        hashmark = "# " if disabled else ""
+
+        options = []
+        if architectures:
+            options += ["arch=%s" % ','.join(architectures)]
+        if not trusted is None:
+            trusted = "yes" if trusted else "no"
+            options += ["trusted=%s" % trusted]
+        options = " ".join(options)
+        if options:
+            options = " [%s]" % options
+
+        comps = " ".join(comps)
+
+        if comment and not comment.startswith("#"):
+            comment = "#%s" % comment
+
+        line = "{hashmark}{type}{options} {uri} {dist} {comps} {comment}"
+        return line.format(hashmark=hashmark, type=type, options=options, uri=uri,
+                           dist=dist, comps=comps, comment=comment or '').strip()
 
     def __init__(self, line, file=None):
         self.invalid = False         # is the source entry valid
@@ -230,29 +266,14 @@ class SourceEntry(object):
         return self.str().strip()
 
     def str(self):
-        """ return the current line as string """
+        """ return the current entry as string """
         if self.invalid:
             return self.line
-        line = ""
-        if self.disabled:
-            line = "# "
-
-        line += self.type
-
-        if self.architectures and self.trusted is not None:
-            line += " [arch=%s trusted=%s]" % (
-                ",".join(self.architectures), "yes" if self.trusted else "no")
-        elif self.trusted is not None:
-            line += " [trusted=%s]" % ("yes" if self.trusted else "no")
-        elif self.architectures:
-            line += " [arch=%s]" % ",".join(self.architectures)
-        line += " %s %s" % (self.uri, self.dist)
-        if len(self.comps) > 0:
-            line += " " + " ".join(self.comps)
-        if self.comment != "":
-            line += " #" + self.comment
-        line += "\n"
-        return line
+        line = self.create_line(disabled=self.disabled, type=self.type,
+                                uri=self.uri, dist=self.dist, comps=self.comps,
+                                architectures=self.architectures,
+                                trusted=self.trusted, comment=self.comment)
+        return "%s\n" % line
 
 
 class NullMatcher(object):
