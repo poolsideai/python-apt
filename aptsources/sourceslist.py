@@ -32,6 +32,8 @@ import re
 import shutil
 import time
 
+from copy import copy
+
 import apt_pkg
 from .distinfo import DistInfo
 from .distro import get_distro
@@ -153,6 +155,17 @@ class SourceEntry(object):
                 self.uri.rstrip('/') == other.uri.rstrip('/') and
                 self.dist == other.dist and
                 set(self.comps) == set(other.comps))
+
+    def __copy__(self):
+        """ Copy this SourceEntry """
+        return SourceEntry(str(self), file=self.file)
+
+    def _replace(self, **kwargs):
+        """ Return copy of this SourceEntry with replaced field(s) """
+        entry = copy(self)
+        for (k, v) in kwargs.items():
+            setattr(entry, k, v)
+        return entry
 
     def mysplit(self, line):
         """ a split() implementation that understands the sources.list
