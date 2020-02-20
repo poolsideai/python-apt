@@ -3,13 +3,13 @@ import subprocess
 import unittest
 
 
-class PackagePyCodeStyleTestCase(unittest.TestCase):
+class PackageFlake8TestCase(unittest.TestCase):
 
-    def test_pycodestyle(self):
+    def test_flake8(self):
         res = 0
         py_dir = os.path.join(os.path.dirname(__file__), "..")
         res += subprocess.call(
-            ["pycodestyle",
+            ["flake8",
              # disable for now:
              # E125 continuation line does not distinguish itself from
              #      next logical line
@@ -23,10 +23,9 @@ class PackagePyCodeStyleTestCase(unittest.TestCase):
              # W504 line break after binary operator (that's the
              #      correct behavior)
              "--ignore=E125,E126,E127,E128,E129,E265,E402,W504",
-             "--exclude", "build,tests/old",
-             "--repeat", py_dir])
+             "--exclude", "build,tests/old", py_dir])
         if res != 0:
-            self.fail("pycodestyle failed with: %s" % res)
+            self.fail("flake8 failed with: %s" % res)
 
 
 if __name__ == "__main__":

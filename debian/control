@@ -20,8 +20,7 @@ Build-Depends: apt (>= 1.0.9.4),
                python3-sphinx (>= 0.5),
                gnupg,
                dirmngr | gnupg (<< 2),
-               pycodestyle,
-               pyflakes
+               flake8
 Vcs-Git: https://salsa.debian.org/apt-team/python-apt.git
 Vcs-Browser: https://salsa.debian.org/apt-team/python-apt
 

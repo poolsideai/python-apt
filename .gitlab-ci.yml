@@ -12,8 +12,8 @@ typing:
 pep8:
   script:
   - apt update
-  - apt install -q -y pycodestyle
-  - env python3 tests/testmanual_pycodestyle.py
+  - apt install -q -y flake8
+  - env python3 tests/testmanual_flake8.py
 
 test:
   script:
