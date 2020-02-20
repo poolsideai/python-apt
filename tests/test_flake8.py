@@ -8,7 +8,7 @@ import unittest
 import testcommon
 
 
-class TestPyflakesClean(testcommon.TestCase):
+class TestFlake8Clean(testcommon.TestCase):
 
     EXCLUDES = ["build", "tests/old", ".pybuild"]
     TOPLEVEL = os.path.normpath(
@@ -31,10 +31,10 @@ class TestPyflakesClean(testcommon.TestCase):
         return files
 
     def test_pyflakes_clean(self):
-        cmd = ["pyflakes"] + self.get_py_files(self.TOPLEVEL)
+        cmd = ["flake8"] + self.get_py_files(self.TOPLEVEL)
         res = subprocess.call(cmd)
         if res != 0:
-            self.fail("pyflakes failed with: %s" % res)
+            self.fail("flake8 failed with: %s" % res)
 
 
 if __name__ == "__main__":
