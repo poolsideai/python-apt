@@ -42,7 +42,9 @@ io  # noqa
 __all__ = ['AcquireProgress', 'CdromProgress', 'OpProgress']
 
 if sys.version_info.major < 3:
-    input = raw_input  # type: ignore
+    # raw_input is not defined on python 3, so we need to ignore the flake8
+    # errors caused by referring to it
+    input = raw_input  # type: ignore # noqa
 else:
     long = int
 

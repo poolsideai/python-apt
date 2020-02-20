@@ -90,10 +90,12 @@ class TestHashes(testcommon.TestCase):
             self.assertRaises(TypeError, apt_pkg.sha1sum, "D")
             self.assertRaises(TypeError, apt_pkg.sha256sum, "D")
         else:
-            self.assertRaises(TypeError, apt_pkg.Hashes, unicode())
-            self.assertRaises(TypeError, apt_pkg.md5sum, unicode())
-            self.assertRaises(TypeError, apt_pkg.sha1sum, unicode())
-            self.assertRaises(TypeError, apt_pkg.sha256sum, unicode())
+            # 'unicode' is not defined on python 3, so we need to ignore the
+            # flake8 errors thrown by referring to it
+            self.assertRaises(TypeError, apt_pkg.Hashes, unicode())  # noqa
+            self.assertRaises(TypeError, apt_pkg.md5sum, unicode())  # noqa
+            self.assertRaises(TypeError, apt_pkg.sha1sum, unicode())  # noqa
+            self.assertRaises(TypeError, apt_pkg.sha256sum, unicode())  # noqa
 
 
 class TestHashString(testcommon.TestCase):
