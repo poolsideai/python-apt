@@ -25,10 +25,10 @@ import sys
 try:
     import types
     from typing import Callable, Optional, Union
-    types  # pyflakes
-    Callable  # pyflakes
-    Optional  # pyflakes
-    Union  # pyflakes
+    types  # noqa
+    Callable  # noqa
+    Optional  # noqa
+    Union  # noqa
 except ImportError:
     pass
 
@@ -36,7 +36,7 @@ import apt_pkg
 from apt.progress import base
 
 
-io  # pyflakes
+io  # noqa
 
 
 __all__ = ['AcquireProgress', 'CdromProgress', 'OpProgress']

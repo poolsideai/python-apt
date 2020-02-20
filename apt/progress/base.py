@@ -34,9 +34,9 @@ import sys
 try:
     from typing import Optional, Union
     import io
-    io  # pyflakes
-    Optional  # pyflakes
-    Union  # pyflakes
+    io  # noqa
+    Optional  # noqa
+    Union  # noqa
 except ImportError:
     pass
 

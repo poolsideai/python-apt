@@ -28,7 +28,7 @@ import re
 import socket
 import subprocess
 import threading
-threading  # pyflakes
+threading  # noqa
 
 try:
     from http.client import BadStatusLine
@@ -42,16 +42,16 @@ try:
     from typing import (Any, Iterable, Iterator, List, Optional, Set,
                         Tuple, Union, no_type_check, overload, Mapping,
                         Sequence)
-    Any  # pyflakes
-    Iterable  # pyflakes
-    Iterator  # pyflakes
-    List  # pyflakes
-    Optional  # pyflakes
-    Set  # pyflakes
-    Tuple  # pyflakes
-    Union  # pyflakes
-    overload  # pyflakes
-    Sequence  # pyflakes
+    Any  # noqa
+    Iterable  # noqa
+    Iterator  # noqa
+    List  # noqa
+    Optional  # noqa
+    Set  # noqa
+    Tuple  # noqa
+    Union  # noqa
+    overload  # noqa
+    Sequence  # noqa
 except ImportError:
     import collections
 
@@ -82,8 +82,8 @@ from apt.progress.base import (
     AcquireProgress,
     InstallProgress,
 )
-AcquireProgress  # pyflakes
-InstallProgress  # pyflakes
+AcquireProgress  # noqa
+InstallProgress  # noqa
 
 from apt_pkg import gettext as _
 

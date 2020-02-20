@@ -16,24 +16,24 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
-from __future__ import print_function
+from __future__ import absolute_import, print_function
 
 import datetime
 import os
 
 try:
     from typing import Optional, Tuple
-    Optional  # pyflakes
-    Tuple  # pyflakes
+    Optional  # noqa
+    Tuple  # noqa
 except ImportError:
     pass
 
 import apt
 import apt_pkg
 
-apt  # pyflakes
-datetime  # pyflakes
-os  # pyflakes
+apt  # noqa
+datetime  # noqa
+os  # noqa
 
 
 def get_maintenance_end_date(release_date, m_months):

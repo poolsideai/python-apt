@@ -29,16 +29,16 @@ import weakref
 try:
     from typing import (Any, Callable, Dict, Iterator, List, Optional,
                         Set, Tuple, Union, cast, KeysView)
-    Any  # pyflakes
-    Callable  # pyflakes
-    Dict  # pyflakes
-    Iterator  # pyflakes
-    KeysView  # pyflakes
-    List  # pyflakes
-    Optional  # pyflakes
-    Set  # pyflakes
-    Tuple  # pyflakes
-    Union  # pyflakes
+    Any  # noqa
+    Callable  # noqa
+    Dict  # noqa
+    Iterator  # noqa
+    KeysView  # noqa
+    List  # noqa
+    Optional  # noqa
+    Set  # noqa
+    Tuple  # noqa
+    Union  # noqa
 except ImportError:
     def cast(typ, obj):  # type: ignore
         return obj
@@ -48,10 +48,10 @@ import apt_pkg
 from apt.package import Package, Version
 import apt.progress.text
 from apt.progress.base import AcquireProgress, InstallProgress, OpProgress
-OpProgress  # pyflakes
-InstallProgress  # pyflakes
-AcquireProgress  # pyflakes
-Version  # pyflakes
+OpProgress  # noqa
+InstallProgress  # noqa
+AcquireProgress  # noqa
+Version  # noqa
 
 
 class FetchCancelledException(IOError):

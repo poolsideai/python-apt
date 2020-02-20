@@ -28,13 +28,13 @@ import sys
 
 try:
     from typing import Dict, Iterable, List, Optional, Set, Tuple, Union, cast
-    Dict  # pyflakes
-    Iterable  # pyflakes
-    List  # pyflakes
-    Optional  # pyflakes
-    Set  # pyflakes
-    Tuple  # pyflakes
-    Union  # pyflakes
+    Dict  # noqa
+    Iterable  # noqa
+    List  # noqa
+    Optional  # noqa
+    Set  # noqa
+    Tuple  # noqa
+    Union  # noqa
 except ImportError:
     def cast(typ, obj):  # type: ignore
         return obj
@@ -601,7 +601,7 @@ class DebPackage(object):
         # turn off MarkAndSweep via a action group (if available)
         try:
             _actiongroup = apt_pkg.ActionGroup(self._cache._depcache)
-            _actiongroup  # pyflakes
+            _actiongroup  # noqa
         except AttributeError:
             pass
         # check depends

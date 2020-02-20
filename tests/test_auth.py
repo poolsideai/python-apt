@@ -15,8 +15,8 @@ import unittest
 if sys.version_info[0] > 2:
     from http.server import HTTPServer
     from http.server import SimpleHTTPRequestHandler as HTTPRequestHandler
-    HTTPServer  # pyflakes
-    HTTPRequestHandler  # pyflakes
+    HTTPServer  # noqa
+    HTTPRequestHandler  # noqa
 else:
     from BaseHTTPServer import HTTPServer
     from SimpleHTTPServer import SimpleHTTPRequestHandler as HTTPRequestHandler

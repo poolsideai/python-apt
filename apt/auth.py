@@ -48,9 +48,9 @@ if sys.version_info.major > 2:
 
 try:
     from typing import List, Tuple, Union
-    List  # pyflakes
-    Tuple  # pyflakes
-    Union  # pyflakes
+    List  # noqa
+    Tuple  # noqa
+    Union  # noqa
 except ImportError:
     pass
 
