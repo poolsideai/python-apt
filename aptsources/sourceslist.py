@@ -504,6 +504,171 @@ class SourcesList(object):
         return (parents, used_child_templates)
 
 
+class CollapsedSourcesList(object):
+    """ collapsed version of SourcesList
+
+    This provides a 'collapsed' view of a SourcesList.
+    Each entry in our list is a MergedSourceEntry, representing real
+    SourceEntry(s) from our backing SourcesList.
+
+    Any changes to our MergedSourceEntries are reflected in our
+    backing SourcesList, however direct changes to SourceEntries
+    in our backing SourcesList are not reflected in our list until
+    after our refresh() method is called.
+    """
+    def __init__(self, sourceslist=None):
+        self.sourceslist = sourceslist or SourcesList()
+        self.list = []
+        self.refresh()
+
+    def __iter__(self):
+        """ iterator for self.list
+
+        Returns MergedSourceEntry objects
+        """
+        for entry in self.list:
+            yield entry
+
+    def __len__(self):
+        """ calculate len of self.list """
+        return len(self.list)
+
+    def __eq__(self, other):
+        """ equal operator for two sources.list entries """
+        return all([e in other for e in self]) and all([e in self for e in other])
+
+    def refresh(self):
+        """ update only our list of MergedSourceEntries
+
+        This updates only our list of MergedSourceEntries, our backing
+        SourcesList is not updated.  This should be called anytime
+        our backing SourcesList is updated directly.
+
+        This does not refresh our backing SourcesList.
+        """
+        self.list = []
+        for entry in self.sourceslist:
+            for mergedentry in self.list:
+                if mergedentry.match(entry):
+                    mergedentry._append(entry)
+                    break
+            else:
+                self.list.append(MergedSourceEntry(entry, self.sourceslist))
+
+    def add_entry(self, new_entry, after=None, before=None):
+        """ Add a new entry to the sources.list.
+
+        This will try to find an existing entry, or an existing entry with
+        the opposite 'disabled' state, to reuse.
+
+        If an existing entry does not exist, new_entry is inserted.
+        If either 'after' or 'before' are specified, and match an existing
+        SourceEntry in our list, then new_entry will be inserted before
+        or after the specified SourceEntry.  If both 'after' and 'before'
+        are provided, 'after' has precedence.  If neither 'after' or 'before'
+        are provided, new_entry is appended to the end of the list.
+        """
+        # the 'inverse' is just the entry with disabled field toggled
+        # this is so we can correctly maintain the requested comps
+        # for both the enabled and disabled entry matches
+        inverse = new_entry._replace(disabled=not new_entry.disabled)
+
+        # the list of comps is the same for new_entry and inverse
+        comps = set(new_entry.comps)
+
+        match_entry = None
+        match_inverse = None
+        for c in self.list:
+            if c.match(new_entry):
+                match_entry = c
+            if c.match(inverse):
+                match_inverse = c
+            if match_entry and match_inverse:
+                break
+
+        if match_entry:
+            # at least one existing entry
+            if match_inverse:
+                # remove comps from inverse
+                inverse_comps = set(match_inverse.comps) - comps
+                match_inverse.comps = list(inverse_comps)
+            # add comps to existing entry
+            return match_entry.get_entry(comps, add=True)
+
+        if match_inverse:
+            # at least one existing inverse entry, and no matching entry;
+            # we want to replace the inverse entry and toggle its disabled state
+            new_inverse = match_inverse.get_entry(comps, add=True, isolate=True)
+
+            # after modifying the entry, we must refresh our merged entries
+            new_inverse.set_enabled(new_inverse.disabled)
+            self.refresh()
+            return self.get_entry(new_entry)
+
+        # no match at all: just append/insert new_entry
+        if after and after in self.sourceslist.list:
+            new_index = self.sourceslist.list.index(after) + 1
+            self.sourceslist.list.insert(new_index, new_entry)
+        elif before and before in self.sourceslist.list:
+            new_index = self.sourceslist.list.index(before)
+            self.sourceslist.list.insert(new_index, new_entry)
+        else:
+            self.sourceslist.list.append(new_entry)
+        self.list.append(MergedSourceEntry(new_entry, self.sourceslist))
+        return new_entry
+
+    def remove_entry(self, entry):
+        """ Remove the specified entry form the sources.list
+
+        This removes as much as possible of the entry.  If the entry
+        matches an existing entry in our list, but our entry contains
+        more components, only the specified components will be removed
+        from our list's entry.  Similarly, if entry contains multiple
+        components, this will remove those components from one or multiple
+        entries, if needed.
+
+        Any entries in our list that have all their components removed will
+        be removed from our list.
+        """
+        for c in self.list:
+            if c.match(entry):
+                c.comps = list(set(c.comps) - set(entry.comps))
+
+    def get_entry(self, new_entry):
+        """ If we already contain new_entry, find and return it
+
+        If new_entry is already contained in our list, with at least
+        all the components in new_entry, this returns our existing entry.
+        The returned entry may have more components than new_entry.
+
+        If new_entry is not contained in our list, or we do not
+        have all the components in new_entry, this returns None.
+
+        This may combine multiple existing SourceEntry lines into a
+        single SourceEntry line so it contains all the requested
+        components.
+        """
+        for c in self.list:
+            if c.match(new_entry):
+                return c.get_entry(new_entry.comps)
+        return None
+
+    def has_entry(self, new_entry):
+        """ Check if we already contain new_entry
+
+        If new_entry contains multiple components, they may be located
+        in multiple lines; this only checks that all requested components,
+        for exactly the SourceEntry that equals new_entry (besides comps),
+        are included in our list.
+
+        This will not change our list.
+        """
+        for c in self.list:
+            if c.match(new_entry):
+                return set(c.comps) >= set(new_entry.comps)
+        return False
+
+
 class SourceEntryMatcher(object):
     """ matcher class to make a source entry look nice
         lots of predefined matchers to make it i18n/gettext friendly
