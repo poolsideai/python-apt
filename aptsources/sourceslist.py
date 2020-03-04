@@ -108,7 +108,7 @@ class SourceEntry(object):
         options = []
         if architectures:
             options += ["arch=%s" % ','.join(architectures)]
-        if not trusted is None:
+        if trusted is not None:
             trusted = "yes" if trusted else "no"
             options += ["trusted=%s" % trusted]
         options = " ".join(options)
@@ -121,8 +121,9 @@ class SourceEntry(object):
             comment = "#%s" % comment
 
         line = "{hashmark}{type}{options} {uri} {dist} {comps} {comment}"
-        return line.format(hashmark=hashmark, type=type, options=options, uri=uri,
-                           dist=dist, comps=comps, comment=comment or '').strip()
+        return line.format(hashmark=hashmark, type=type, options=options,
+                           uri=uri, dist=dist, comps=comps,
+                           comment=comment or '').strip()
 
     def __init__(self, line, file=None):
         self.invalid = False         # is the source entry valid
@@ -482,11 +483,12 @@ class SourcesList(object):
 
     def __eq__(self, other):
         """ equal operator for two sources.list entries """
-        return all([e in other for e in self]) and all([e in self for e in other])
+        return (all([e in other for e in self]) and
+                all([e in self for e in other]))
 
     def add(self, type, uri, dist, comps, comment="", pos=-1, file=None,
             architectures=[], disabled=False):
-        """ Create a new entry with the provided parameters and add it to our list """
+        """ Create a new entry and add it to our list """
         if pos >= 0 and pos < len(self.list):
             before = self.list[pos]
         else:
@@ -564,7 +566,7 @@ class SourcesList(object):
 
         # re-create empty sources.list if needed
         sourcelist = apt_pkg.config.find_file("Dir::Etc::sourcelist")
-        if not sourcelist in files:
+        if sourcelist not in files:
             header = (
                 "## See sources.list(5) for more information, especialy\n"
                 "# Remember that you can only use http, ftp or file URIs\n"
@@ -629,7 +631,8 @@ class CollapsedSourcesList(object):
 
     def __eq__(self, other):
         """ equal operator for two sources.list entries """
-        return all([e in other for e in self]) and all([e in self for e in other])
+        return (all([e in other for e in self]) and
+                all([e in self for e in other]))
 
     def refresh(self):
         """ update only our list of MergedSourceEntries
@@ -691,8 +694,9 @@ class CollapsedSourcesList(object):
 
         if match_inverse:
             # at least one existing inverse entry, and no matching entry;
-            # we want to replace the inverse entry and toggle its disabled state
-            new_inverse = match_inverse.get_entry(comps, add=True, isolate=True)
+            # replace the inverse entry and toggle its disabled state
+            new_inverse = match_inverse.get_entry(comps,
+                                                  add=True, isolate=True)
 
             # after modifying the entry, we must refresh our merged entries
             new_inverse.set_enabled(new_inverse.disabled)

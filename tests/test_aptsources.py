@@ -434,8 +434,10 @@ class TestAptSources(testcommon.TestCase):
                             "main universe restricted")
         self.assertIn(entry, collapsed)
 
-        self.assertTrue(collapsed.has_entry(entry._replace(comps=['universe'])))
-        self.assertFalse(collapsed.has_entry(entry._replace(comps=['multiverse'])))
+        test_entry = entry._replace(comps=['universe'])
+        self.assertTrue(collapsed.has_entry(test_entry))
+        test_entry = entry._replace(comps=['multiverse'])
+        self.assertFalse(collapsed.has_entry(test_entry))
 
     def test_collapsed_sourceslist_get_entry(self):
         """Test CollapsedSourcesList.get_entry"""
@@ -451,9 +453,12 @@ class TestAptSources(testcommon.TestCase):
         e = collapsed.get_entry(entry._replace(comps=['main', 'universe']))
         self.assertTrue(set(['main', 'universe']) <= set(e.comps))
         self.assertEqual(initial_count - 1, len(sources))
-        self.assertIsNone(collapsed.get_entry(entry._replace(comps=['multiverse'])))
-        self.assertIsNone(collapsed.get_entry(entry._replace(type='deb-src')))
-        self.assertIsNone(collapsed.get_entry(entry._replace(uri='http://foo.bar/ubuntu/')))
+        test_entry = entry._replace(comps=['multiverse'])
+        self.assertIsNone(collapsed.get_entry(test_entry))
+        test_entry = entry._replace(type='deb-src')
+        self.assertIsNone(collapsed.get_entry(test_entry))
+        test_entry = entry._replace(uri='http://foo.bar/ubuntu/')
+        self.assertIsNone(collapsed.get_entry(test_entry))
 
     def test_collapsed_sourceslist_add_entry(self):
         """Test CollapsedSourcesList.add_entry"""
@@ -468,7 +473,8 @@ class TestAptSources(testcommon.TestCase):
         initial_sources_list = copy.deepcopy(sources)
         initial_collapsed = copy.deepcopy(collapsed)
         collapsed.add_entry(entry._replace(comps=['multiverse']))
-        self.assertIsNotNone(collapsed.get_entry(entry._replace(comps=['multiverse'])))
+        test_entry = entry._replace(comps=['multiverse'])
+        self.assertIsNotNone(collapsed.get_entry(test_entry))
         self.assertNotEqual(collapsed, initial_collapsed)
         self.assertNotEqual(sources, initial_sources_list)
 
@@ -485,7 +491,8 @@ class TestAptSources(testcommon.TestCase):
         initial_sources_list = copy.deepcopy(sources)
         initial_collapsed = copy.deepcopy(collapsed)
         collapsed.remove_entry(entry._replace(comps=['multiverse']))
-        self.assertIsNone(collapsed.get_entry(entry._replace(comps=['multiverse'])))
+        test_entry = entry._replace(comps=['multiverse'])
+        self.assertIsNone(collapsed.get_entry(test_entry))
         self.assertEqual(collapsed, initial_collapsed)
         self.assertEqual(sources, initial_sources_list)
 
@@ -501,7 +508,8 @@ class TestAptSources(testcommon.TestCase):
 
         initial_sources_list = copy.deepcopy(sources)
         initial_collapsed = copy.deepcopy(collapsed)
-        #   first, verify a collapsed list refresh does not refresh backing sourceslist
+        #   first, verify a collapsed list refresh does not refresh
+        #   backing sourceslist
         collapsed.add_entry(entry._replace(comps=['multiverse']))
         self.assertNotEqual(collapsed, initial_collapsed)
         self.assertNotEqual(sources, initial_sources_list)
@@ -511,7 +519,8 @@ class TestAptSources(testcommon.TestCase):
         #   now, verify sourceslist refresh works
         sources.refresh()
         self.assertEqual(sources, initial_sources_list)
-        #   and verify collapsed list refresh picks up backing sourceslist changes
+        #   and verify collapsed list refresh picks up backing
+        #   sourceslist changes
         self.assertNotEqual(collapsed, initial_collapsed)
         collapsed.refresh()
         self.assertEqual(collapsed, initial_collapsed)
