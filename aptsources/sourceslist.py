@@ -344,6 +344,14 @@ class SourcesList(object):
                     all(predicate(source) for predicate in predicates)):
                 yield source
 
+    def __len__(self):
+        """ calculate len of self.list """
+        return len(self.list)
+
+    def __eq__(self, other):
+        """ equal operator for two sources.list entries """
+        return all([e in other for e in self]) and all([e in self for e in other])
+
     def add(self, type, uri, dist, orig_comps, comment="", pos=-1, file=None,
             architectures=[]):
         """
