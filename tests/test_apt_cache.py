@@ -67,6 +67,10 @@ class TestAptCache(testcommon.TestCase):
         # go over the cache and all dependencies, just to see if
         # that is possible and does not crash
         for pkg in cache:
+            self.assertTrue(pkg.is_now_broken in (True, False))
+            self.assertTrue(pkg.is_inst_broken in (True, False))
+            self.assertTrue(pkg.is_now_policy_broken in (True, False))
+            self.assertTrue(pkg.is_inst_policy_broken in (True, False))
             if pkg.candidate:
                 for or_deps in pkg.candidate.dependencies:
                     for dep in or_deps:

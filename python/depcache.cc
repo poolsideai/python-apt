@@ -511,6 +511,36 @@ static PyObject *PkgDepCacheIsInstBroken(PyObject *Self,PyObject *Args)
    return HandleErrors(PyBool_FromLong(state.InstBroken()));
 }
 
+static PyObject *PkgDepCacheIsNowPolicyBroken(PyObject *Self,PyObject *Args)
+{
+   pkgDepCache *depcache = GetCpp<pkgDepCache *>(Self);
+
+   PyObject *PackageObj;
+   if (PyArg_ParseTuple(Args,"O!",&PyPackage_Type,&PackageObj) == 0)
+      return 0;
+
+   pkgCache::PkgIterator &Pkg = GetCpp<pkgCache::PkgIterator>(PackageObj);
+   VALIDATE_ITERATOR(Pkg);
+   pkgDepCache::StateCache &state = (*depcache)[Pkg];
+
+   return HandleErrors(PyBool_FromLong(state.NowPolicyBroken()));
+}
+
+static PyObject *PkgDepCacheIsInstPolicyBroken(PyObject *Self,PyObject *Args)
+{
+   pkgDepCache *depcache = GetCpp<pkgDepCache *>(Self);
+
+   PyObject *PackageObj;
+   if (PyArg_ParseTuple(Args,"O!",&PyPackage_Type,&PackageObj) == 0)
+      return 0;
+
+   pkgCache::PkgIterator &Pkg = GetCpp<pkgCache::PkgIterator>(PackageObj);
+   VALIDATE_ITERATOR(Pkg);
+   pkgDepCache::StateCache &state = (*depcache)[Pkg];
+
+   return HandleErrors(PyBool_FromLong(state.InstPolicyBroken()));
+}
+
 
 static PyObject *PkgDepCacheMarkedInstall(PyObject *Self,PyObject *Args)
 {
@@ -674,6 +704,12 @@ static PyMethodDef PkgDepCacheMethods[] =
    {"is_inst_broken",PkgDepCacheIsInstBroken,METH_VARARGS,
     "is_inst_broken(pkg: apt_pkg.Package) -> bool\n\n"
     "Check whether the package is broken, ignoring marked changes."},
+   {"is_now_policy_broken",PkgDepCacheIsNowPolicyBroken,METH_VARARGS,
+    "is_now_policy_broken(pkg: apt_pkg.Package) -> bool\n\n"
+    "Check whether the package is policy broken, ignoring marked changes."},
+   {"is_inst_policy_broken",PkgDepCacheIsInstPolicyBroken,METH_VARARGS,
+    "is_inst_policy_broken(pkg: apt_pkg.Package) -> bool\n\n"
+    "Check whether the package is policy broken, taking marked changes into account."},
    {"is_garbage",PkgDepCacheIsGarbage,METH_VARARGS,
     "is_garbage(pkg: apt_pkg.Package) -> bool\n\n"
     "Check whether the package is garbage, i.e. whether it is automatically\n"

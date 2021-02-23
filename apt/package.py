@@ -1446,6 +1446,18 @@ class Package(object):
         return self._pcache._depcache.is_now_broken(self._pkg)
 
     @property
+    def is_now_policy_broken(self):
+        # type: () -> bool
+        """Return True if the installed package is policy broken."""
+        return self._pcache._depcache.is_now_policy_broken(self._pkg)
+
+    @property
+    def is_inst_policy_broken(self):
+        # type: () -> bool
+        """Return True if the to-be-installed package is policy broken."""
+        return self._pcache._depcache.is_inst_policy_broken(self._pkg)
+
+    @property
     def has_config_files(self):
         # type: () -> bool
         """Checks whether the package is is the config-files state."""
