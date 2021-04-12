@@ -32,8 +32,11 @@ import re
 import shutil
 import time
 
+from copy import copy
+
 import apt_pkg
 from .distinfo import DistInfo
+from .distro import get_distro
 #from apt_pkg import gettext as _
 
 
@@ -86,6 +89,42 @@ def uniq(s):
 class SourceEntry(object):
     """ single sources.list entry """
 
+    @classmethod
+    def create_line(cls, uri, disabled=False, type=get_distro().binary_type,
+                    dist=get_distro().codename, comps=[], architectures=[],
+                    trusted=None, comment=None):
+        """ Create a line from the given parts.
+
+        The 'uri' parameter is mandatory; the rest will be filled with defaults
+        if not set.
+        """
+        if type.startswith("#"):
+            # backwards compatibility; please just use disabled param
+            disabled = True
+            type = type.lstrip("# ")
+
+        hashmark = "# " if disabled else ""
+
+        options = []
+        if architectures:
+            options += ["arch=%s" % ','.join(architectures)]
+        if trusted is not None:
+            trusted = "yes" if trusted else "no"
+            options += ["trusted=%s" % trusted]
+        options = " ".join(options)
+        if options:
+            options = " [%s]" % options
+
+        comps = " ".join(comps)
+
+        if comment and not comment.startswith("#"):
+            comment = "#%s" % comment
+
+        line = "{hashmark}{type}{options} {uri} {dist} {comps} {comment}"
+        return line.format(hashmark=hashmark, type=type, options=options,
+                           uri=uri, dist=dist, comps=comps,
+                           comment=comment or '').strip()
+
     def __init__(self, line, file=None):
         self.invalid = False         # is the source entry valid
         self.disabled = False        # is it disabled ('#' in front)
@@ -107,11 +146,27 @@ class SourceEntry(object):
 
     def __eq__(self, other):
         """ equal operator for two sources.list entries """
+        if self.invalid or other.invalid:
+            return (self.invalid == other.invalid and
+                    self.line == other.line)
         return (self.disabled == other.disabled and
                 self.type == other.type and
+                set(self.architectures) == set(other.architectures) and
+                self.trusted == other.trusted and
                 self.uri.rstrip('/') == other.uri.rstrip('/') and
                 self.dist == other.dist and
-                self.comps == other.comps)
+                set(self.comps) == set(other.comps))
+
+    def __copy__(self):
+        """ Copy this SourceEntry """
+        return SourceEntry(str(self), file=self.file)
+
+    def _replace(self, **kwargs):
+        """ Return copy of this SourceEntry with replaced field(s) """
+        entry = copy(self)
+        for (k, v) in kwargs.items():
+            setattr(entry, k, v)
+        return entry
 
     def mysplit(self, line):
         """ a split() implementation that understands the sources.list
@@ -230,29 +285,154 @@ class SourceEntry(object):
         return self.str().strip()
 
     def str(self):
-        """ return the current line as string """
+        """ return the current entry as string """
         if self.invalid:
             return self.line
-        line = ""
-        if self.disabled:
-            line = "# "
+        line = self.create_line(disabled=self.disabled, type=self.type,
+                                uri=self.uri, dist=self.dist, comps=self.comps,
+                                architectures=self.architectures,
+                                trusted=self.trusted, comment=self.comment)
+        return "%s\n" % line
 
-        line += self.type
 
-        if self.architectures and self.trusted is not None:
-            line += " [arch=%s trusted=%s]" % (
-                ",".join(self.architectures), "yes" if self.trusted else "no")
-        elif self.trusted is not None:
-            line += " [trusted=%s]" % ("yes" if self.trusted else "no")
-        elif self.architectures:
-            line += " [arch=%s]" % ",".join(self.architectures)
-        line += " %s %s" % (self.uri, self.dist)
-        if len(self.comps) > 0:
-            line += " " + " ".join(self.comps)
-        if self.comment != "":
-            line += " #" + self.comment
-        line += "\n"
-        return line
+class MergedSourceEntry(SourceEntry):
+    """ A SourceEntry representing one or more identical SourceEntries
+
+    The SourceEntries this represents are identical except for the components
+    they contain.  This will contain all the contained entries' components.
+
+    If all components are removed, this will still act as a normal SourceEntry
+    without any components, but all corresponding real SourceEntries will be
+    removed from the SourcesList.
+
+    This may contain multiple SourceEntries that overlap components (e.g.
+    two entries that both contain 'main' component), however once any
+    changes are made to the set of comps, duplicates will be removed.
+    """
+    def __init__(self, entry, sourceslist):
+        self._initialized = False
+        super(MergedSourceEntry, self).__init__(str(entry), file=entry.file)
+        self._initialized = True
+
+        self._sourceslist = sourceslist
+        self._entries = [entry]
+
+    def match(self, other):
+        """ Check if this is equal to other, ignoring comps """
+        if self.invalid:
+            # Never match an invalid entry; those are full-line comments
+            # and whitespace and should be left as-is
+            return False
+        return self._replace(comps=[]) == other._replace(comps=[])
+
+    def _append(self, entry):
+        """ Append entry
+
+        This should be called only with an entry that is equal to us,
+        besides comps.  The new entry may contain comps already in
+        other entries we contain, but any modification of our comps
+        will remove all duplicate comps.
+        """
+        self._entries.append(entry)
+
+    def get_entry(self, comps, add=False, isolate=False):
+        """ Get single SourceEntry with comps
+
+        This moves all the components into a single entry in our entries
+        list, and returns that entry.
+
+        If add is False, this will return None if we do not already
+        contain all the requested comps; otherwise this adds any
+        new comps.
+
+        If isolate is False, the entry returned may contain more
+        components than those requested in comps.  If isolate is True,
+        this moves any excess components into a new entry, located
+        immediately after the returned entry.
+
+        If any of the components already exist in one of our entries,
+        it is used to move all the components to; otherwise the first
+        entry in our list is used.
+
+        Any of our entries that has all its components moved (thus has
+        no components left) will be removed from our entries list and
+        removed from our sourceslist.
+
+        If called with no comps this will return our first SourceEntry.
+        If we contain no SourceEntries (because we contain no components),
+        this will return None if called with no comps.
+        """
+        comps = set(copy(comps))
+
+        if not set(self.comps) >= comps and not add:
+            # we don't contain all requested comps
+            return None
+
+        for e in self._entries:
+            if set(e.comps) & comps:
+                # we want to move requested comps to e
+                comps -= set(e.comps)
+                # remove other comps from other entries
+                self.comps = list(set(self.comps) - comps)
+                # add them all to this entry
+                e.comps = list(set(e.comps) | comps)
+                break
+        else:
+            # all comps are new to us (or no comps requested),
+            # add them to our first entry
+            self.comps = list(set(self.comps) | comps)
+            try:
+                e = self._entries[0]
+            except KeyError:
+                # we are empty, return None
+                return None
+
+        if isolate and comps and set(e.comps) > comps:
+            newe = e._replace(comps=list(set(e.comps) - comps))
+            e.comps = list(comps)
+            newi = self._sourceslist.list.index(e) + 1
+            self._sourceslist.list.insert(newi, newe)
+            self._append(newe)
+
+        return e
+
+    @property
+    def comps(self):
+        c = set()
+        for e in self._entries:
+            c |= set(e.comps)
+        return list(c)
+
+    @comps.setter
+    def comps(self, comps):
+        if not self._initialized:
+            return
+
+        comps = set(copy(comps))
+        if comps == set(self.comps):
+            # no change needed
+            return
+
+        for e in self._entries:
+            e.comps = list(set(e.comps) & comps)
+            comps -= set(e.comps)
+
+        if comps:
+            if not self._entries:
+                self._entries = [copy(self)]
+                self._sourceslist.list.append(self._entries[0])
+            self._entries[0].comps = list(set(self._entries[0].comps) | comps)
+
+        for e in list(self._entries):
+            if not e.comps:
+                self._entries.remove(e)
+                self._sourceslist.list.remove(e)
+
+    def __setattribute__(self, name, value):
+        if not (name == 'comps' or name.startswith('_')):
+            for e in self._entries:
+                setattr(e, name, value)
+        super(MergedSourceEntry, self).__setattribute__(name, value)
 
 
 class NullMatcher(object):
@@ -278,6 +458,7 @@ class SourcesList(object):
     def refresh(self):
         """ update the list of known entries """
         self.list = []
+        self._files = set()
         # read sources.list
         file = apt_pkg.config.find_file("Dir::Etc::sourcelist")
         if os.path.exists(file):
@@ -297,80 +478,29 @@ class SourcesList(object):
         for entry in self.list:
             yield entry
 
-    def __find(self, *predicates, **attrs):
-        uri = attrs.pop('uri', None)
-        for source in self.list:
-            if uri and uri.rstrip('/') != source.uri.rstrip('/'):
-                continue
-            if (all(getattr(source, key) == attrs[key] for key in attrs) and
-                    all(predicate(source) for predicate in predicates)):
-                yield source
+    def __len__(self):
+        """ calculate len of self.list """
+        return len(self.list)
 
-    def add(self, type, uri, dist, orig_comps, comment="", pos=-1, file=None,
-            architectures=[]):
-        """
-        Add a new source to the sources.list.
-        The method will search for existing matching repos and will try to
-        reuse them as far as possible
-        """
+    def __eq__(self, other):
+        """ equal operator for two sources.list entries """
+        return (all([e in other for e in self]) and
+                all([e in self for e in other]))
 
-        type = type.strip()
-        disabled = type.startswith("#")
-        if disabled:
-            type = type[1:].lstrip()
-        architectures = set(architectures)
-        # create a working copy of the component list so that
-        # we can modify it later
-        comps = orig_comps[:]
-        sources = self.__find(lambda s: set(s.architectures) == architectures,
-                              disabled=disabled, invalid=False, type=type,
-                              uri=uri, dist=dist)
-        # check if we have this source already in the sources.list
-        for source in sources:
-            for new_comp in comps:
-                if new_comp in source.comps:
-                    # we have this component already, delete it
-                    # from the new_comps list
-                    del comps[comps.index(new_comp)]
-                    if len(comps) == 0:
-                        return source
-
-        sources = self.__find(lambda s: set(s.architectures) == architectures,
-                              invalid=False, type=type, uri=uri, dist=dist)
-        for source in sources:
-            if source.disabled == disabled:
-                # if there is a repo with the same (disabled, type, uri, dist)
-                # just add the components
-                if set(source.comps) != set(comps):
-                    source.comps = uniq(source.comps + comps)
-                return source
-            elif source.disabled and not disabled:
-                # enable any matching (type, uri, dist), but disabled repo
-                if set(source.comps) == set(comps):
-                    source.disabled = False
-                    return source
-        # there isn't any matching source, so create a new line and parse it
-        parts = [
-            "#" if disabled else "",
-            type,
-            ("[arch=%s]" % ",".join(architectures)) if architectures else "",
-            uri,
-            dist,
-        ]
-        parts.extend(comps)
-        if comment:
-            parts.append("#" + comment)
-        line = " ".join(part for part in parts if part) + "\n"
-
-        new_entry = SourceEntry(line)
-        if file is not None:
-            new_entry.file = file
-        self.matcher.match(new_entry)
-        if pos < 0:
-            self.list.append(new_entry)
+    def add(self, type, uri, dist, comps, comment="", pos=-1, file=None,
+            architectures=[], disabled=False):
+        """ Create a new entry and add it to our list """
+        if pos >= 0 and pos < len(self.list):
+            before = self.list[pos]
         else:
-            self.list.insert(pos, new_entry)
-        return new_entry
+            before = None
+
+        line = SourceEntry.create_line(disabled=disabled, type=type, uri=uri,
+                                       dist=dist, comps=comps, comment=comment,
+                                       architectures=architectures)
+        new_entry = SourceEntry(line, file=file)
+        collapsed = CollapsedSourcesList(self)
+        return collapsed.add_entry(new_entry, before=before)
 
     def remove(self, source_entry):
         """ remove the specified entry from the sources.list """
@@ -406,32 +536,45 @@ class SourcesList(object):
                 for line in f:
                     source = SourceEntry(line, file)
                     self.list.append(source)
+            self._files.add(file)
         except Exception:
             logging.warning("could not open file '%s'\n" % file)
 
-    def save(self):
-        """ save the current sources """
-        files = {}
-        # write an empty default config file if there aren't any sources
-        if len(self.list) == 0:
-            path = apt_pkg.config.find_file("Dir::Etc::sourcelist")
+    def save(self, remove=False):
+        """ save the current sources
+
+        By default, this will NOT remove any files that we no longer
+        have entries for; those files will not be modified at all.
+
+        If 'remove' is True, any files that we initially parsed, but
+        no longer have any entries for, will be removed.
+        """
+        files = set(e.file for e in self.list)
+
+        for filename in files:
+            with open(filename, "w") as f:
+                for source in [s for s in self.list if s.file == filename]:
+                    f.write(source.str())
+
+        if remove:
+            # remove any files that are now empty
+            for filename in self._files - files:
+                try:
+                    os.remove(filename)
+                except (OSError, IOError):
+                    pass
+            self._files = files
+
+        # re-create empty sources.list if needed
+        sourcelist = apt_pkg.config.find_file("Dir::Etc::sourcelist")
+        if sourcelist not in files:
             header = (
                 "## See sources.list(5) for more information, especialy\n"
                 "# Remember that you can only use http, ftp or file URIs\n"
                 "# CDROMs are managed through the apt-cdrom tool.\n")
 
-            with open(path, "w") as f:
+            with open(sourcelist, "w") as f:
                 f.write(header)
-            return
-
-        try:
-            for source in self.list:
-                if source.file not in files:
-                    files[source.file] = open(source.file, "w")
-                files[source.file].write(source.str())
-        finally:
-            for f in files:
-                files[f].close()
 
     def check_for_relations(self, sources_list):
         """get all parent and child channels in the sources list"""
@@ -456,6 +599,173 @@ class SourcesList(object):
         #print self.used_child_templates
         #print self.parents
         return (parents, used_child_templates)
+
+
+class CollapsedSourcesList(object):
+    """ collapsed version of SourcesList
+
+    This provides a 'collapsed' view of a SourcesList.
+    Each entry in our list is a MergedSourceEntry, representing real
+    SourceEntry(s) from our backing SourcesList.
+
+    Any changes to our MergedSourceEntries are reflected in our
+    backing SourcesList, however direct changes to SourceEntries
+    in our backing SourcesList are not reflected in our list until
+    after our refresh() method is called.
+    """
+    def __init__(self, sourceslist=None):
+        self.sourceslist = sourceslist or SourcesList()
+        self.list = []
+        self.refresh()
+
+    def __iter__(self):
+        """ iterator for self.list
+
+        Returns MergedSourceEntry objects
+        """
+        for entry in self.list:
+            yield entry
+
+    def __len__(self):
+        """ calculate len of self.list """
+        return len(self.list)
+
+    def __eq__(self, other):
+        """ equal operator for two sources.list entries """
+        return (all([e in other for e in self]) and
+                all([e in self for e in other]))
+
+    def refresh(self):
+        """ update only our list of MergedSourceEntries
+
+        This updates only our list of MergedSourceEntries, our backing
+        SourcesList is not updated.  This should be called anytime
+        our backing SourcesList is updated directly.
+
+        This does not refresh our backing SourcesList.
+        """
+        self.list = []
+        for entry in self.sourceslist:
+            for mergedentry in self.list:
+                if mergedentry.match(entry):
+                    mergedentry._append(entry)
+                    break
+            else:
+                self.list.append(MergedSourceEntry(entry, self.sourceslist))
+
+    def add_entry(self, new_entry, after=None, before=None):
+        """ Add a new entry to the sources.list.
+
+        This will try to find an existing entry, or an existing entry with
+        the opposite 'disabled' state, to reuse.
+
+        If an existing entry does not exist, new_entry is inserted.
+        If either 'after' or 'before' are specified, and match an existing
+        SourceEntry in our list, then new_entry will be inserted before
+        or after the specified SourceEntry.  If both 'after' and 'before'
+        are provided, 'after' has precedence.  If neither 'after' or 'before'
+        are provided, new_entry is appended to the end of the list.
+        """
+        # the 'inverse' is just the entry with disabled field toggled
+        # this is so we can correctly maintain the requested comps
+        # for both the enabled and disabled entry matches
+        inverse = new_entry._replace(disabled=not new_entry.disabled)
+
+        # the list of comps is the same for new_entry and inverse
+        comps = set(new_entry.comps)
+
+        match_entry = None
+        match_inverse = None
+        for c in self.list:
+            if c.match(new_entry):
+                match_entry = c
+            if c.match(inverse):
+                match_inverse = c
+            if match_entry and match_inverse:
+                break
+
+        if match_entry:
+            # at least one existing entry
+            if match_inverse:
+                # remove comps from inverse
+                inverse_comps = set(match_inverse.comps) - comps
+                match_inverse.comps = list(inverse_comps)
+            # add comps to existing entry
+            return match_entry.get_entry(comps, add=True)
+
+        if match_inverse:
+            # at least one existing inverse entry, and no matching entry;
+            # replace the inverse entry and toggle its disabled state
+            new_inverse = match_inverse.get_entry(comps,
+                                                  add=True, isolate=True)
+
+            # after modifying the entry, we must refresh our merged entries
+            new_inverse.set_enabled(new_inverse.disabled)
+            self.refresh()
+            return self.get_entry(new_entry)
+
+        # no match at all: just append/insert new_entry
+        if after and after in self.sourceslist.list:
+            new_index = self.sourceslist.list.index(after) + 1
+            self.sourceslist.list.insert(new_index, new_entry)
+        elif before and before in self.sourceslist.list:
+            new_index = self.sourceslist.list.index(before)
+            self.sourceslist.list.insert(new_index, new_entry)
+        else:
+            self.sourceslist.list.append(new_entry)
+        self.list.append(MergedSourceEntry(new_entry, self.sourceslist))
+        return new_entry
+
+    def remove_entry(self, entry):
+        """ Remove the specified entry form the sources.list
+
+        This removes as much as possible of the entry.  If the entry
+        matches an existing entry in our list, but our entry contains
+        more components, only the specified components will be removed
+        from our list's entry.  Similarly, if entry contains multiple
+        components, this will remove those components from one or multiple
+        entries, if needed.
+
+        Any entries in our list that have all their components removed will
+        be removed from our list.
+        """
+        for c in self.list:
+            if c.match(entry):
+                c.comps = list(set(c.comps) - set(entry.comps))
+
+    def get_entry(self, new_entry):
+        """ If we already contain new_entry, find and return it
+
+        If new_entry is already contained in our list, with at least
+        all the components in new_entry, this returns our existing entry.
+        The returned entry may have more components than new_entry.
+
+        If new_entry is not contained in our list, or we do not
+        have all the components in new_entry, this returns None.
+
+        This may combine multiple existing SourceEntry lines into a
+        single SourceEntry line so it contains all the requested
+        components.
+        """
+        for c in self.list:
+            if c.match(new_entry):
+                return c.get_entry(new_entry.comps)
+        return None
+
+    def has_entry(self, new_entry):
+        """ Check if we already contain new_entry
+
+        If new_entry contains multiple components, they may be located
+        in multiple lines; this only checks that all requested components,
+        for exactly the SourceEntry that equals new_entry (besides comps),
+        are included in our list.
+
+        This will not change our list.
+        """
+        for c in self.list:
+            if c.match(new_entry):
+                return set(c.comps) >= set(new_entry.comps)
+        return False
 
 
 class SourceEntryMatcher(object):

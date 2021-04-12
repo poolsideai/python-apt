@@ -6,8 +6,10 @@ import copy
 import tempfile
 
 import apt_pkg
-import aptsources.sourceslist
 import aptsources.distro
+
+from aptsources.sourceslist import (SourceEntry, SourcesList,
+                                    CollapsedSourcesList, is_mirror)
 
 import testcommon
 
@@ -35,10 +37,9 @@ class TestAptSources(testcommon.TestCase):
 
     def testIsMirror(self):
         """aptsources: Test mirror detection."""
-        yes = aptsources.sourceslist.is_mirror("http://archive.ubuntu.com",
-                                               "http://de.archive.ubuntu.com")
-        no = aptsources.sourceslist.is_mirror("http://archive.ubuntu.com",
-                                              "http://ftp.debian.org")
+        yes = is_mirror("http://archive.ubuntu.com",
+                        "http://de.archive.ubuntu.com")
+        no = is_mirror("http://archive.ubuntu.com", "http://ftp.debian.org")
         self.assertTrue(yes)
         self.assertFalse(no)
 
@@ -46,7 +47,7 @@ class TestAptSources(testcommon.TestCase):
         """aptsources: Test sources.list parsing."""
         apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
                                                    "sources.list")
-        sources = aptsources.sourceslist.SourcesList(True, self.templates)
+        sources = SourcesList(True, self.templates)
         self.assertEqual(len(sources.list), 10)
         # test load
         sources.list = []
@@ -57,7 +58,7 @@ class TestAptSources(testcommon.TestCase):
         """aptsources: Test additions to sources.list"""
         apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
                                                    "sources.list")
-        sources = aptsources.sourceslist.SourcesList(True, self.templates)
+        sources = SourcesList(True, self.templates)
         # test to add something that is already there (main)
         before = copy.deepcopy(sources)
         sources.add("deb", "http://de.archive.ubuntu.com/ubuntu/",
@@ -144,7 +145,7 @@ class TestAptSources(testcommon.TestCase):
     def testAddingWithComment(self):
         apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
                                                    "sources.list")
-        sources = aptsources.sourceslist.SourcesList(True, self.templates)
+        sources = SourcesList(True, self.templates)
 
         # test to add something that is already there (main); loses comment
         before = copy.deepcopy(sources)
@@ -180,7 +181,7 @@ class TestAptSources(testcommon.TestCase):
     def testInsertion(self):
         apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
                                                    "sources.list")
-        sources = aptsources.sourceslist.SourcesList(True, self.templates)
+        sources = SourcesList(True, self.templates)
 
         # test to insert something that is already there (universe); does not
         # move existing entry (remains at index 2)
@@ -222,7 +223,7 @@ class TestAptSources(testcommon.TestCase):
     def testDuplication(self):
         apt_pkg.config.set("Dir::Etc::sourcelist",
                            "data/aptsources/sources.list.testDuplication")
-        sources = aptsources.sourceslist.SourcesList(True, self.templates)
+        sources = SourcesList(True, self.templates)
         test_url = "http://ppa.launchpad.net/me/myproject/ubuntu"
         # test to add something that is already there (enabled)
         before = copy.deepcopy(sources)
@@ -250,7 +251,7 @@ class TestAptSources(testcommon.TestCase):
         """aptsources: Test matcher"""
         apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
                            "sources.list.testDistribution")
-        sources = aptsources.sourceslist.SourcesList(True, self.templates)
+        sources = SourcesList(True, self.templates)
         distro = aptsources.distro.get_distro(id="Ubuntu",
                                               codename="bionic",
                                               description="Ubuntu 18.04 LTS",
@@ -266,7 +267,7 @@ class TestAptSources(testcommon.TestCase):
 
         apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
                            "sources.list")
-        sources = aptsources.sourceslist.SourcesList(True, self.templates)
+        sources = SourcesList(True, self.templates)
         assert not sources.list[8].invalid
         assert sources.list[8].type == "deb"
         assert sources.list[8].architectures == ["amd64", "i386"]
@@ -281,7 +282,7 @@ class TestAptSources(testcommon.TestCase):
 
         apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
                            "sources.list")
-        sources = aptsources.sourceslist.SourcesList(True, self.templates)
+        sources = SourcesList(True, self.templates)
         assert sources.list[9].invalid is False
         assert sources.list[9].type == "deb"
         assert sources.list[9].architectures == ["amd64", "i386"]
@@ -298,7 +299,7 @@ class TestAptSources(testcommon.TestCase):
         with open(target, "w") as target_file:
             target_file.write(line)
         apt_pkg.config.set("Dir::Etc::sourcelist", target)
-        sources = aptsources.sourceslist.SourcesList(True, self.templates)
+        sources = SourcesList(True, self.templates)
         distro = aptsources.distro.get_distro(id="Ubuntu")
         # make sure we are using the right distro
         distro.codename = "lucid"
@@ -319,7 +320,7 @@ class TestAptSources(testcommon.TestCase):
         """aptsources: Test distribution detection."""
         apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
                            "sources.list.testDistribution")
-        sources = aptsources.sourceslist.SourcesList(True, self.templates)
+        sources = SourcesList(True, self.templates)
         distro = aptsources.distro.get_distro(id="Ubuntu",
                                               codename="bionic",
                                               description="Ubuntu 18.04 LTS",
@@ -388,7 +389,7 @@ class TestAptSources(testcommon.TestCase):
         """LP: #1042916: Test enabling disabled entry."""
         apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
                            "sources.list")
-        sources = aptsources.sourceslist.SourcesList(True, self.templates)
+        sources = SourcesList(True, self.templates)
         disabled = sources.add("deb", "http://fi.archive.ubuntu.com/ubuntu/",
                     "precise",
                     ["main"])
@@ -403,11 +404,11 @@ class TestAptSources(testcommon.TestCase):
         """Test replacing entry with same uri except trailing slash"""
         apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
                            "sources.list")
-        sources = aptsources.sourceslist.SourcesList(True, self.templates)
+        sources = SourcesList(True, self.templates)
         line_wslash = "deb http://rslash.ubuntu.com/ubuntu/ precise main"
         line_woslash = "deb http://rslash.ubuntu.com/ubuntu precise main"
-        entry_wslash = aptsources.sourceslist.SourceEntry(line_wslash)
-        entry_woslash = aptsources.sourceslist.SourceEntry(line_woslash)
+        entry_wslash = SourceEntry(line_wslash)
+        entry_woslash = SourceEntry(line_woslash)
         self.assertEqual(entry_wslash, entry_woslash)
         count = len(sources.list)
         sourceslist_wslash = sources.add(entry_wslash.type,
@@ -422,6 +423,107 @@ class TestAptSources(testcommon.TestCase):
                                           entry_woslash.comps)
         self.assertEqual(count, len(sources.list))
         self.assertEqual(sourceslist_wslash, sourceslist_woslash)
+
+    def test_collapsed_sourceslist_has_entry(self):
+        """Test CollapsedSourcesList.has_entry"""
+        apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
+                           "sources.list")
+        sources = SourcesList(True, self.templates)
+        collapsed = CollapsedSourcesList(sources)
+        entry = SourceEntry("deb http://de.archive.ubuntu.com/ubuntu/ edgy "
+                            "main universe restricted")
+        self.assertIn(entry, collapsed)
+
+        test_entry = entry._replace(comps=['universe'])
+        self.assertTrue(collapsed.has_entry(test_entry))
+        test_entry = entry._replace(comps=['multiverse'])
+        self.assertFalse(collapsed.has_entry(test_entry))
+
+    def test_collapsed_sourceslist_get_entry(self):
+        """Test CollapsedSourcesList.get_entry"""
+        apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
+                           "sources.list")
+        sources = SourcesList(True, self.templates)
+        collapsed = CollapsedSourcesList(sources)
+        entry = SourceEntry("deb http://de.archive.ubuntu.com/ubuntu/ edgy "
+                            "main universe restricted")
+        self.assertIn(entry, collapsed)
+
+        initial_count = len(sources)
+        e = collapsed.get_entry(entry._replace(comps=['main', 'universe']))
+        self.assertTrue(set(['main', 'universe']) <= set(e.comps))
+        self.assertEqual(initial_count - 1, len(sources))
+        test_entry = entry._replace(comps=['multiverse'])
+        self.assertIsNone(collapsed.get_entry(test_entry))
+        test_entry = entry._replace(type='deb-src')
+        self.assertIsNone(collapsed.get_entry(test_entry))
+        test_entry = entry._replace(uri='http://foo.bar/ubuntu/')
+        self.assertIsNone(collapsed.get_entry(test_entry))
+
+    def test_collapsed_sourceslist_add_entry(self):
+        """Test CollapsedSourcesList.add_entry"""
+        apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
+                           "sources.list")
+        sources = SourcesList(True, self.templates)
+        collapsed = CollapsedSourcesList(sources)
+        entry = SourceEntry("deb http://de.archive.ubuntu.com/ubuntu/ edgy "
+                            "main universe restricted")
+        self.assertIn(entry, collapsed)
+
+        initial_sources_list = copy.deepcopy(sources)
+        initial_collapsed = copy.deepcopy(collapsed)
+        collapsed.add_entry(entry._replace(comps=['multiverse']))
+        test_entry = entry._replace(comps=['multiverse'])
+        self.assertIsNotNone(collapsed.get_entry(test_entry))
+        self.assertNotEqual(collapsed, initial_collapsed)
+        self.assertNotEqual(sources, initial_sources_list)
+
+    def test_collapsed_sourceslist_remove_entry(self):
+        """Test CollapsedSourcesList.remove_entry"""
+        apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
+                           "sources.list")
+        sources = SourcesList(True, self.templates)
+        collapsed = CollapsedSourcesList(sources)
+        entry = SourceEntry("deb http://de.archive.ubuntu.com/ubuntu/ edgy "
+                            "main universe restricted")
+        self.assertIn(entry, collapsed)
+
+        initial_sources_list = copy.deepcopy(sources)
+        initial_collapsed = copy.deepcopy(collapsed)
+        collapsed.remove_entry(entry._replace(comps=['multiverse']))
+        test_entry = entry._replace(comps=['multiverse'])
+        self.assertIsNone(collapsed.get_entry(test_entry))
+        self.assertEqual(collapsed, initial_collapsed)
+        self.assertEqual(sources, initial_sources_list)
+
+    def test_collapsed_sourceslist_refresh(self):
+        """Test CollapsedSourcesList.refresh"""
+        apt_pkg.config.set("Dir::Etc::sourcelist", "data/aptsources/"
+                           "sources.list")
+        sources = SourcesList(True, self.templates)
+        collapsed = CollapsedSourcesList(sources)
+        entry = SourceEntry("deb http://de.archive.ubuntu.com/ubuntu/ edgy "
+                            "main universe restricted")
+        self.assertIn(entry, collapsed)
+
+        initial_sources_list = copy.deepcopy(sources)
+        initial_collapsed = copy.deepcopy(collapsed)
+        #   first, verify a collapsed list refresh does not refresh
+        #   backing sourceslist
+        collapsed.add_entry(entry._replace(comps=['multiverse']))
+        self.assertNotEqual(collapsed, initial_collapsed)
+        self.assertNotEqual(sources, initial_sources_list)
+        collapsed.refresh()
+        self.assertNotEqual(collapsed, initial_collapsed)
+        self.assertNotEqual(sources, initial_sources_list)
+        #   now, verify sourceslist refresh works
+        sources.refresh()
+        self.assertEqual(sources, initial_sources_list)
+        #   and verify collapsed list refresh picks up backing
+        #   sourceslist changes
+        self.assertNotEqual(collapsed, initial_collapsed)
+        collapsed.refresh()
+        self.assertEqual(collapsed, initial_collapsed)
 
 
 if __name__ == "__main__":
