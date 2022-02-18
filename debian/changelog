@@ -1,3 +1,21 @@
+python-apt (2.3.1) UNRELEASED; urgency=medium
+
+  * Remove constraints unnecessary since buster:
+    + Build-Depends: Drop versioned constraint on apt, python3-all,
+      python3-all-dbg, python3-all-dev, python3-distutils-extra and
+      python3-sphinx.
+    + python-apt-doc: Drop versioned constraint on python-apt in Replaces.
+    + python-apt-dev: Drop versioned constraint on libapt-pkg-dev in Depends.
+    + python-apt-common: Drop versioned constraint on python-apt in Replaces.
+    + python-apt-common: Drop versioned constraint on python-apt in Breaks.
+    + python3-apt: Drop versioned constraint on python-apt in Replaces.
+    + python3-apt: Drop versioned constraint on python-apt in Breaks.
+    + python3-apt-dbg: Drop versioned constraint on python-apt in Replaces.
+    + python3-apt-dbg: Drop versioned constraint on python-apt in Breaks.
+    + Remove 2 maintscript entries from 2 files.
+
+ -- Debian Janitor <janitor@jelmer.uk>  Fri, 18 Feb 2022 11:16:12 -0000
+
 python-apt (2.3.0) unstable; urgency=medium
 
   [ Edmund Blomley ]
