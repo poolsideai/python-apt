@@ -4,21 +4,21 @@ import unittest
 import warnings
 import apt_pkg
 
-import testcommon
+from tests.testcommon import TestCase
 
 
-class testHashes(testcommon.TestCase):
+class TestHashes(TestCase):
     " test the hashsum functions against strings and files "
 
     DATA_PATH = "data/hashsums/hashsum_test.data"
     DATA_WITH_ZERO_PATH = "data/hashsums/hashsum_test_with_zero.data"
 
     def setUp(self):
-        testcommon.TestCase.setUp(self)
+        TestCase.setUp(self)
         warnings.filterwarnings("ignore", category=DeprecationWarning)
 
     def tearDown(self):
-        testcommon.TestCase.tearDown(self)
+        TestCase.tearDown(self)
         warnings.resetwarnings()
 
     def testMD5(self):

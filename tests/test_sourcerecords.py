@@ -13,20 +13,20 @@ import sys
 import unittest
 
 
-from test_all import get_library_dir
+from tests.test_all import get_library_dir
 libdir = get_library_dir()
 if libdir:
     sys.path.insert(0, libdir)
 
 import apt_pkg
 import apt
-import testcommon
+from tests.testcommon import TestCase
 
 
-class TestSourceRecords(testcommon.TestCase):
+class TestSourceRecords(TestCase):
 
     def setUp(self):
-        testcommon.TestCase.setUp(self)
+        TestCase.setUp(self)
 
         rootdir = "./data/tmp"
         if os.path.exists(rootdir):

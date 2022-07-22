@@ -12,7 +12,7 @@ import apt
 import apt_pkg
 import os
 
-import testcommon
+from tests.testcommon import TestCase
 
 
 class TestAcquireProgress(apt.progress.base.AcquireProgress):
@@ -23,10 +23,10 @@ class TestAcquireProgress(apt.progress.base.AcquireProgress):
         # so the lib supports it. we test the lack of support value here
 
 
-class TestProgress(testcommon.TestCase):
+class TestProgress(TestCase):
 
     def setUp(self):
-        testcommon.TestCase.setUp(self)
+        TestCase.setUp(self)
         basedir = os.path.abspath(os.path.dirname(__file__))
         # setup apt_pkg config
         apt_pkg.init()

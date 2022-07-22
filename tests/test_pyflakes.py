@@ -5,10 +5,10 @@ import os
 import subprocess
 import unittest
 
-import testcommon
+from tests.testcommon import TestCase
 
 
-class TestPyflakesClean(testcommon.TestCase):
+class TestPyflakesClean(TestCase):
 
     EXCLUDES = ["build", "tests/old", ".pybuild"]
     TOPLEVEL = os.path.normpath(

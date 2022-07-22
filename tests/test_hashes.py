@@ -15,15 +15,15 @@ import warnings
 
 import apt_pkg
 
-import testcommon
+from tests.testcommon import TestCase
 
 
-class TestHashes(testcommon.TestCase):
+class TestHashes(TestCase):
     """Test apt_pkg.Hashes() and the various apt_pkg.*sum() functions."""
 
     def setUp(self):
         """Prepare the tests, create reference values..."""
-        testcommon.TestCase.setUp(self)
+        TestCase.setUp(self)
         self.file = open(apt_pkg.__file__, "rb")
         self.value = self.file.read()
         self.hashes = apt_pkg.Hashes(self.value)
@@ -39,7 +39,7 @@ class TestHashes(testcommon.TestCase):
 
     def tearDown(self):
         """Cleanup, Close the file object used for the tests."""
-        testcommon.TestCase.tearDown(self)
+        TestCase.tearDown(self)
         warnings.resetwarnings()
         self.file.close()
 
@@ -89,12 +89,12 @@ class TestHashes(testcommon.TestCase):
         self.assertRaises(TypeError, apt_pkg.sha256sum, "D")
 
 
-class TestHashString(testcommon.TestCase):
+class TestHashString(TestCase):
     """Test apt_pkg.HashString()."""
 
     def setUp(self):
         """Prepare the test by reading the file."""
-        testcommon.TestCase.setUp(self)
+        TestCase.setUp(self)
         self.file = open(apt_pkg.__file__)
         self.hashes = apt_pkg.Hashes(self.file)
 
@@ -127,7 +127,7 @@ class TestHashString(testcommon.TestCase):
         self.assertRaises(TypeError, apt_pkg.HashString, bytes())
 
 
-class TestHashStringList(testcommon.TestCase):
+class TestHashStringList(TestCase):
     """Test apt_pkg.HashStringList()"""
 
     def test_file_size(self):

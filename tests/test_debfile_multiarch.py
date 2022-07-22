@@ -9,7 +9,7 @@
 """Unit tests for verifying the correctness of DebPackage in apt.debfile."""
 import unittest
 
-from test_all import get_library_dir
+from tests.test_all import get_library_dir
 import sys
 libdir = get_library_dir()
 if libdir:
@@ -18,10 +18,10 @@ import apt
 import apt_pkg
 import apt.debfile
 
-import testcommon
+from tests.testcommon import TestCase
 
 
-class TestDebfileMultiarch(testcommon.TestCase):
+class TestDebfileMultiarch(TestCase):
     """ test the multiarch debfile """
 
     def test_multiarch_deb_check(self):

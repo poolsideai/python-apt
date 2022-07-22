@@ -10,7 +10,7 @@
 import os
 import unittest
 
-from test_all import get_library_dir
+from tests.test_all import get_library_dir
 import sys
 
 libdir = get_library_dir()

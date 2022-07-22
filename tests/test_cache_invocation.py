@@ -4,10 +4,10 @@ import unittest
 import apt_pkg
 import apt.progress.base
 
-import testcommon
+from tests.testcommon import TestCase
 
 
-class TestCache(testcommon.TestCase):
+class TestCache(TestCase):
     """Test invocation of apt_pkg.Cache()"""
 
     def test_wrong_invocation(self):

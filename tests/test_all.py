@@ -43,9 +43,7 @@ if __name__ == '__main__':
         sys.exit(0)
 
     sys.stdout.write("[tests] Running on %s\n" % sys.version.replace("\n", ""))
-    dirname = os.path.dirname(__file__)
-    if dirname:
-        os.chdir(dirname)
+    dirname = os.path.abspath(os.path.dirname(__file__))
     library_dir = get_library_dir()
     if "pybuild" in os.getenv("PYTHONPATH", ""):
         # pybuild already supplied us with a path to check for
@@ -54,9 +52,11 @@ if __name__ == '__main__':
         sys.stdout.write("Using library_dir: '%s'\n" % library_dir)
         sys.path.insert(0, os.path.abspath(library_dir))
 
-    for path in os.listdir('.'):
-        if (path.endswith('.py') and os.path.isfile(path) and
-            path.startswith("test_")):
-            exec('from %s import *' % path[:-3])
+    for path in os.listdir(dirname):
+        if (path.endswith('.py') and path.startswith("test_") and
+            os.path.isfile(os.path.join(dirname, path))):
+            module = os.path.split(dirname)[-1]
+            exec('from %s.%s import *' % (module, path[:-3]))
 
     unittest.main(testRunner=MyTestRunner)
+

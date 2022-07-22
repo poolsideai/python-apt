@@ -10,10 +10,10 @@ import apt
 import apt_pkg
 import unittest
 
-import testcommon
+from tests.testcommon import TestCase
 
 
-class TestAptPolicy(testcommon.TestCase):
+class TestAptPolicy(TestCase):
     def test_apt_policy_lowlevel(self):
         return  # TODO: Make tests independent of system state
         # get a policy

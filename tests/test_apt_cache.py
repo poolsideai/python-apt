@@ -18,8 +18,7 @@ import sys
 import tempfile
 import unittest
 
-
-from test_all import get_library_dir
+from tests.test_all import get_library_dir
 libdir = get_library_dir()
 if libdir:
     sys.path.insert(0, libdir)
@@ -27,7 +26,7 @@ if libdir:
 import apt
 import apt_pkg
 
-import testcommon
+from tests.testcommon import TestCase
 
 
 def if_sources_list_is_readable(f):
@@ -49,11 +48,11 @@ def get_open_file_descriptors():
     return set(map(int, fds))
 
 
-class TestAptCache(testcommon.TestCase):
+class TestAptCache(TestCase):
     """ test the apt cache """
 
     def setUp(self):
-        testcommon.TestCase.setUp(self)
+        TestCase.setUp(self)
         apt_pkg.config.clear("APT::Update::Post-Invoke")
         apt_pkg.config.clear("APT::Update::Post-Invoke-Success")
 
@@ -148,7 +147,7 @@ class TestAptCache(testcommon.TestCase):
     @if_sources_list_is_readable
     def test_dpkg_journal_dirty(self):
         # create tmp env
-        tmpdir = tempfile.mkdtemp()
+        tmpdir = self.tmpdir
         dpkg_dir = os.path.join(tmpdir, "var", "lib", "dpkg")
         os.makedirs(os.path.join(dpkg_dir, "updates"))
         open(os.path.join(dpkg_dir, "status"), "w").close()

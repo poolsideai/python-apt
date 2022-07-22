@@ -30,17 +30,17 @@ import unittest
 import apt_pkg
 import apt
 
-import testcommon
+from tests.testcommon import TestCase
 
 
-class RegressionTestCase(testcommon.TestCase):
+class RegressionTestCase(TestCase):
 
     """Test suite for LP: #981896, LP: #659438
     'Cannot locate a file for package X'
     """
 
     def setUp(self):
-        testcommon.TestCase.setUp(self)
+        TestCase.setUp(self)
         apt_pkg.config.clear("APT::Update::Post-Invoke")
         apt_pkg.config.clear("APT::Update::Post-Invoke-Success")
         self.chroot_path = chroot_path = tempfile.mkdtemp()

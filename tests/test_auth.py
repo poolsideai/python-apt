@@ -18,7 +18,7 @@ from http.server import SimpleHTTPRequestHandler as HTTPRequestHandler
 import apt_pkg
 import apt.auth
 
-import testcommon
+from tests.testcommon import TestCase
 
 WHEEZY_KEYID = "8B48AD6246925553"
 WHEEZY_KEYDATE = "1335553717"
@@ -116,15 +116,13 @@ def normalize_key(keystr):
     return lines
 
 
-class TestAuthKeys(testcommon.TestCase):
+class TestAuthKeys(TestCase):
 
     """Test handling of keys for signed repositories."""
 
     def setUp(self):
-        testcommon.TestCase.setUp(self)
+        TestCase.setUp(self)
 
-        self.tmpdir = tempfile.mkdtemp()
-        self.addCleanup(shutil.rmtree, self.tmpdir)
         apt_pkg.config.set("Dir", self.tmpdir)
         apt_pkg.config.set("Dir::Bin::Apt-key", "fakeroot-apt-key")
         apt_pkg.config.set("Dir::Etc", "etc/apt/")

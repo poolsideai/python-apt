@@ -11,14 +11,14 @@
 import os
 import unittest
 
-from test_all import get_library_dir
+from tests.test_all import get_library_dir
 import sys
 libdir = get_library_dir()
 if libdir:
     sys.path.insert(0, libdir)
 from apt.progress.base import InstallProgress
 
-import testcommon
+from tests.testcommon import TestCase
 
 
 class RunHelper:
@@ -29,7 +29,7 @@ class RunHelper:
         return os.spawnl(os.P_WAIT, self.script, self.script, str(fd))
 
 
-class TestInstallProgressExec(testcommon.TestCase):
+class TestInstallProgressExec(TestCase):
     """ test that InstallProgress.run() passes a valid file descriptor to
         a child process """
 

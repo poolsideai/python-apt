@@ -9,10 +9,10 @@
 import unittest
 import apt_pkg
 
-import testcommon
+from tests.testcommon import TestCase
 
 
-class TestConfiguration(testcommon.TestCase):
+class TestConfiguration(TestCase):
     """Test various configuration things"""
 
     def test_lp707416(self):
