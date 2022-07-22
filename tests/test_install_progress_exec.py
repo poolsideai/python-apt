@@ -11,11 +11,6 @@
 import os
 import unittest
 
-from tests.test_all import get_library_dir
-import sys
-libdir = get_library_dir()
-if libdir:
-    sys.path.insert(0, libdir)
 from apt.progress.base import InstallProgress
 
 from tests.testcommon import TestCase

@@ -14,14 +14,8 @@ import glob
 import logging
 import os
 import shutil
-import sys
 import tempfile
 import unittest
-
-from tests.test_all import get_library_dir
-libdir = get_library_dir()
-if libdir:
-    sys.path.insert(0, libdir)
 
 import apt
 import apt_pkg

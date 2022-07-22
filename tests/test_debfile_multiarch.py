@@ -9,11 +9,6 @@
 """Unit tests for verifying the correctness of DebPackage in apt.debfile."""
 import unittest
 
-from tests.test_all import get_library_dir
-import sys
-libdir = get_library_dir()
-if libdir:
-    sys.path.insert(0, libdir)
 import apt
 import apt_pkg
 import apt.debfile
