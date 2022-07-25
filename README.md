@@ -31,9 +31,9 @@ first.
 
 Run the tests with:
 ```
-$ python3 -m unittest
+$ PYTHONPATH=. python3 -m unittest
 # or
-$ pytest-3
+$ PYTHONPATH=. pytest-3
 ```
 
 ## Running mypy:
