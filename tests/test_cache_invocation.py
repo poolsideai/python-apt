@@ -12,6 +12,7 @@ class TestCache(TestCase):
 
     def test_wrong_invocation(self):
         """cache_invocation: Test wrong invocation."""
+        print(apt_pkg)
         apt_cache = apt_pkg.Cache(progress=None)
 
         self.assertRaises(ValueError, apt_pkg.Cache, apt_cache)

@@ -3,10 +3,10 @@ import unittest
 
 import apt_pkg
 
-import testcommon
+from tests.testcommon import TestCase
 
 
-class TestLargeFileSupport(testcommon.TestCase):
+class TestLargeFileSupport(TestCase):
     """Test large file support"""
 
     def test_acquire_file(self):
