@@ -17,7 +17,7 @@ import apt
 import apt.progress.base
 import apt.progress.text
 
-import testcommon
+from tests.testcommon import TestCase
 
 # A change in APT to early fail acquire items with weak hashes caused it
 # to call progress methods before calling Start(), which confused python-apt's
@@ -34,11 +34,11 @@ CACHE_MSG_WEAK_HASH = (
 )
 
 
-class TestSignedUsable(testcommon.TestCase):
+class TestSignedUsable(TestCase):
     """Test fetch_binary() and fetch_source() signature checking."""
 
     def setUp(self):
-        testcommon.TestCase.setUp(self)
+        TestCase.setUp(self)
         apt_pkg.config.clear("APT::Update::Post-Invoke")
         apt_pkg.config.clear("APT::Update::Post-Invoke-Success")
         self.chroot_path = chroot_path = tempfile.mkdtemp()

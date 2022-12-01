@@ -1,8 +1,10 @@
 """Common testing stuff"""
 
 import apt_pkg
-import os
 
+import os
+import shutil
+import tempfile
 import unittest
 
 
@@ -10,7 +12,12 @@ class TestCase(unittest.TestCase):
     """Base class for python-apt unittests"""
 
     def setUp(self):
+        super(TestCase, self).setUp()
         self.resetConfig()
+        self.temp_dir = self.tmpdir = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.temp_dir)
+        self.testdir = os.path.dirname(__file__)
+        os.chdir(self.testdir)
 
     def resetConfig(self):
         apt_pkg.config.clear("")

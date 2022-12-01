@@ -8,10 +8,10 @@ import unittest
 import apt_inst
 import apt_pkg
 
-import testcommon
+from tests.testcommon import TestCase
 
 
-class TestPath(testcommon.TestCase):
+class TestPath(TestCase):
 
     dir_unicode = u'data/tmp'
     dir_bytes = b'data/tmp'
@@ -19,7 +19,7 @@ class TestPath(testcommon.TestCase):
     file_bytes = b'data/tmp/python-apt-test'
 
     def setUp(self):
-        testcommon.TestCase.setUp(self)
+        TestCase.setUp(self)
         if os.path.exists(self.dir_bytes):
             shutil.rmtree(self.dir_bytes)
 

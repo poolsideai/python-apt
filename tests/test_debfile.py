@@ -11,18 +11,13 @@ import os
 import logging
 import unittest
 
-from test_all import get_library_dir
-import sys
-libdir = get_library_dir()
-if libdir:
-    sys.path.insert(0, libdir)
 import apt_pkg
 import apt.debfile
 
-import testcommon
+from tests.testcommon import TestCase
 
 
-class TestDebfile(testcommon.TestCase):
+class TestDebfile(TestCase):
     """ test the debfile """
 
     TEST_DEBS = [
@@ -50,7 +45,7 @@ class TestDebfile(testcommon.TestCase):
     ]
 
     def setUp(self):
-        testcommon.TestCase.setUp(self)
+        TestCase.setUp(self)
         apt_pkg.config.set("APT::Architecture", "i386")
         # FIXME: When run via test_all.py, the tests fail without this if it
         # is set in the system.

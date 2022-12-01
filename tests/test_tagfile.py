@@ -15,22 +15,15 @@ from __future__ import print_function, unicode_literals
 import io
 import glob
 import os
-import shutil
 import sys
-import tempfile
 import unittest
-
-from test_all import get_library_dir
-libdir = get_library_dir()
-if libdir:
-    sys.path.insert(0, libdir)
 
 import apt_pkg
 
-import testcommon
+from tests.testcommon import TestCase
 
 
-class TestOpenMaybeClearSigned(testcommon.TestCase):
+class TestOpenMaybeClearSigned(TestCase):
 
     def test_open_trivial(self):
         basepath = os.path.dirname(__file__)
@@ -53,15 +46,8 @@ class TestOpenMaybeClearSigned(testcommon.TestCase):
             apt_pkg.open_maybe_clear_signed_file("does-not-exists")
 
 
-class TestTagFile(testcommon.TestCase):
+class TestTagFile(TestCase):
     """ test the apt_pkg.TagFile """
-
-    def setUp(self):
-        testcommon.TestCase.setUp(self)
-        self.temp_dir = tempfile.mkdtemp()
-
-    def tearDown(self):
-        shutil.rmtree(self.temp_dir)
 
     def test_tag_file(self):
         basepath = os.path.dirname(__file__)
@@ -162,15 +148,8 @@ class TestTagFile(testcommon.TestCase):
                 value.encode("ISO-8859-1"), tagfile.section["Maintainer"])
 
 
-class TestTagSection(testcommon.TestCase):
+class TestTagSection(TestCase):
     """ test the apt_pkg.TagFile """
-
-    def setUp(self):
-        testcommon.TestCase.setUp(self)
-        self.temp_dir = tempfile.mkdtemp()
-
-    def tearDown(self):
-        shutil.rmtree(self.temp_dir)
 
     def test_write(self):
         ts = apt_pkg.TagSection("a: 1\nb: 2\nc: 3\n")
