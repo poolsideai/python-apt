@@ -5,6 +5,7 @@ import glob
 import os
 import shutil
 import sys
+import subprocess
 
 from setuptools import setup, Extension
 from setuptools.command.install import install
@@ -45,6 +46,15 @@ cmdclass['install'] = InstallTypeinfo
 def get_version():
     """Get a PEP 0440 compatible version string"""
     version = os.environ.get('DEBVER')
+    if not version:
+        proc = subprocess.Popen(
+            ["dpkg-parsechangelog", "-SVersion"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        out, _ = proc.communicate()
+        if proc.returncode == 0:
+            version = out.decode("utf-8")
     if not version:
         return version
 
