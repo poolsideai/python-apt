@@ -38,7 +38,9 @@ class NoDistroTemplateException(Exception):
 
 
 class Distribution:
-    def __init__(self, id, codename, description, release, is_like=[]):
+    def __init__(
+        self, id, codename, description, release, is_like=[], like_codenames={}
+    ):
         """Container for distribution specific informations"""
         # OS information
         self.id = id
@@ -46,6 +48,7 @@ class Distribution:
         self.description = description
         self.release = release
         self.is_like = is_like
+        self.like_codenames = like_codenames
 
         self.binary_type = "deb"
         self.source_type = "deb-src"
@@ -521,7 +524,14 @@ def _system_image_channel():
     return None
 
 
-def get_distro(id=None, codename=None, description=None, release=None, is_like=[]):
+def get_distro(
+    id=None,
+    codename=None,
+    description=None,
+    release=None,
+    is_like=[],
+    like_codenames={},
+):
     """
     Check the currently used distribution and return the corresponding
     distriubtion class that supports distro specific features.
@@ -536,6 +546,14 @@ def get_distro(id=None, codename=None, description=None, release=None, is_like=[
         description = os_release["PRETTY_NAME"]
         release = os_release["VERSION_ID"]
         is_like = os_release.get("ID_LIKE", [])
+        # One can specify the derived codename like UBUNTU_VERSION_CODENAME to signal
+        # that it is a subdistribution of it.
+        for like_id in is_like:
+            like_codename = os_release.get(
+                "%s_VERSION_CODENAME" % like_id.upper(), None
+            )
+            if like_codename is not None:
+                like_codenames[like_id] = like_codename
         if id == "Ubuntu":
             channel = _system_image_channel()
             if channel is not None and "ubuntu-rtm/" in channel:
@@ -544,10 +562,16 @@ def get_distro(id=None, codename=None, description=None, release=None, is_like=[
                 description = codename
                 release = codename
     if id == "Ubuntu":
-        return UbuntuDistribution(id, codename, description, release, is_like)
+        return UbuntuDistribution(
+            id, codename, description, release, is_like, like_codenames
+        )
     if id == "Ubuntu-RTM":
-        return UbuntuRTMDistribution(id, codename, description, release, is_like)
+        return UbuntuRTMDistribution(
+            id, codename, description, release, is_like, like_codenames
+        )
     elif id == "Debian":
-        return DebianDistribution(id, codename, description, release, is_like)
+        return DebianDistribution(
+            id, codename, description, release, is_like, like_codenames
+        )
     else:
-        return Distribution(id, codename, description, release, is_like)
+        return Distribution(id, codename, description, release, is_like, like_codenames)
