@@ -22,12 +22,11 @@
 #  USA
 
 import csv
-import errno
 import logging
 import os
+import platform
 import re
 from collections.abc import Iterator
-from subprocess import PIPE, Popen
 from typing import cast
 
 import apt_pkg
@@ -261,20 +260,8 @@ class DistInfo:
         # match_mirror_line = re.compile(r".+")
 
         if not dist:
-            try:
-                dist = (
-                    Popen(
-                        ["lsb_release", "-i", "-s"],
-                        universal_newlines=True,
-                        stdout=PIPE,
-                    )
-                    .communicate()[0]
-                    .strip()
-                )
-            except OSError as exc:
-                if exc.errno != errno.ENOENT:
-                    logging.warning("lsb_release failed, using defaults: %s" % exc)
-                dist = "Debian"
+            info = platform.freedesktop_os_release()
+            dist = info["ID"]
 
         self.dist = dist
 
