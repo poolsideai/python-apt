@@ -222,7 +222,7 @@ latex_documents = [
         "python-apt Documentation",
         "Julian Andres Klode <jak@debian.org>",
         "manual",
-    ),
+    )
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

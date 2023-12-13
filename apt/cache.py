@@ -169,10 +169,7 @@ class Cache:
         check if the required apt directories/files are there and if
         not create them
         """
-        files = [
-            "/var/lib/dpkg/status",
-            "/etc/apt/sources.list",
-        ]
+        files = ["/var/lib/dpkg/status", "/etc/apt/sources.list"]
         dirs = [
             "/var/lib/dpkg",
             "/etc/apt/",

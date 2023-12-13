@@ -143,9 +143,7 @@ setup(
     author_email="deity@lists.debian.org",
     ext_modules=[apt_pkg, apt_inst],
     packages=["apt", "apt.progress", "aptsources"],
-    package_data={
-        "apt": ["*.pyi", "py.typed"],
-    },
+    package_data={"apt": ["*.pyi", "py.typed"]},
     data_files=[
         ("share/python-apt/templates", glob.glob("build/data/templates/*.info")),
         ("share/python-apt/templates", glob.glob("data/templates/*.mirrors")),

@@ -651,8 +651,7 @@ class SourceEntry:
 
         if self.architectures and self.trusted is not None:
             line += " [arch={} trusted={}]".format(
-                ",".join(self.architectures),
-                "yes" if self.trusted else "no",
+                ",".join(self.architectures), "yes" if self.trusted else "no"
             )
         elif self.trusted is not None:
             line += " [trusted=%s]" % ("yes" if self.trusted else "no")

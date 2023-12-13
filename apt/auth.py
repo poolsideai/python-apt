@@ -185,14 +185,7 @@ def _add_key_from_keyserver(keyid: str, keyserver: str, tmp_keyring_dir: str) ->
     tmp_export_keyring = os.path.join(tmp_keyring_dir, "export-keyring.gpg")
     res = subprocess.call(
         gpg_default_options
-        + [
-            "--keyring",
-            tmp_keyring,
-            "--output",
-            tmp_export_keyring,
-            "--export",
-            keyid,
-        ]
+        + ["--keyring", tmp_keyring, "--output", tmp_export_keyring, "--export", keyid]
     )
     if res != 0:
         raise AptKeyError("export of '%s' failed", keyid)

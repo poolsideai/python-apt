@@ -244,9 +244,7 @@ def split_url(url: str) -> list[str]:
 
 class DistInfo:
     def __init__(
-        self,
-        dist: str | None = None,
-        base_dir: str = "/usr/share/python-apt/templates",
+        self, dist: str | None = None, base_dir: str = "/usr/share/python-apt/templates"
     ):
         self.metarelease_uri = ""
         self.templates: list[Template] = []

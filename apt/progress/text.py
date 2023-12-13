@@ -174,8 +174,7 @@ class AcquireProgress(base.AcquireProgress, TextProgress):
         if self.current_cps:
             eta = int(float(self.total_bytes - self.current_bytes) / self.current_cps)
             end = " {}B/s {}".format(
-                apt_pkg.size_to_str(self.current_cps),
-                apt_pkg.time_to_str(eta),
+                apt_pkg.size_to_str(self.current_cps), apt_pkg.time_to_str(eta)
             )
 
         for worker in owner.workers:
