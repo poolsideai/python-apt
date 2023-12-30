@@ -59,7 +59,7 @@ pm = apt_pkg.PackageManager(depcache)
 print(pm)
 print(fetcher)
 
-get_file(fetcher, "ftp://ftp.debian.org/debian/dists/README", "/tmp/lala")
+get_file(fetcher, "http://ftp.debian.org/debian/dists/README", "/tmp/lala")
 
 pm.get_archives(fetcher, list, recs)
 
@@ -76,5 +76,6 @@ res = fetcher.run()
 print("fetcher.Run() returned: %s" % res)
 
 print("now runing pm.DoInstall()")
-res = pm.do_install(1)
+progress = apt_pkg.PackageManagerProgressFancy()
+res = pm.do_install(progress=progress)
 print("pm.DoInstall() returned: %s" % res)

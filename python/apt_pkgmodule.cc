@@ -818,6 +818,7 @@ static struct _PyAptPkgAPIStruct API = {
    &PyPackageManager_Type,    // packagemanager_type
    &PyPackageManager_FromCpp,   // packagemanager_type
    &PyPackageManager_ToCpp,   // packagemanager_type
+   &PyPackageManagerProgressFancy_Type,
    &PyPackageRecords_Type,    // packagerecords_type
    0,                         // FIXME: packagerecords_fromcpp
    0,                         // FIXME: packagerecords_tocpp
@@ -959,6 +960,8 @@ extern "C" void initapt_pkg()
    /* ========================= pkgmanager.cc ========================= */
    ADDTYPE(Module,"_PackageManager",&PyPackageManager_Type);
    ADDTYPE(Module,"PackageManager",&PyPackageManager2_Type);
+   /* ========================= pkgmanagerprogress.cc ==================== */
+   ADDTYPE(Module,"PackageManagerProgressFancy",&PyPackageManagerProgressFancy_Type);
    /* ========================= pkgrecords.cc ========================= */
    ADDTYPE(Module,"PackageRecords",&PyPackageRecords_Type);
    /* ========================= pkgsrcrecords.cc ========================= */
