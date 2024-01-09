@@ -27,8 +27,7 @@ def get_library_dir():
     # Set the path to the build directory.
     plat_specifier = f".{get_platform()}-{get_python_version()}"
     library_dir = "../build/lib{}{}".format(
-        plat_specifier,
-        (sys.pydebug and "-pydebug" or ""),
+        plat_specifier, (sys.pydebug and "-pydebug" or "")
     )
     return os.path.abspath(library_dir)
 

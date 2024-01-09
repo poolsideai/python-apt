@@ -91,10 +91,7 @@ def get_release_filename_for_pkg(
                 for relfile in ["InRelease", "Release"]:
                     name = apt_pkg.uri_to_filename(
                         metaindex.uri
-                    ) + "dists_{}_{}".format(
-                        metaindex.dist,
-                        relfile,
-                    )
+                    ) + "dists_{}_{}".format(metaindex.dist, relfile)
                     if os.path.exists(dirname + name):
                         return dirname + name
     return None

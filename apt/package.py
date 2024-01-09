@@ -103,10 +103,7 @@ class BaseDependency:
 
     def __repr__(self) -> str:
         return "<BaseDependency: name:{!r} relation:{!r} version:{!r} rawtype:{!r}>".format(
-            self.name,
-            self.relation,
-            self.version,
-            self.rawtype,
+            self.name, self.relation, self.version, self.rawtype
         )
 
     @property
@@ -1008,9 +1005,7 @@ class Package:
 
     def __repr__(self) -> str:
         return "<Package: name:{!r} architecture={!r} id:{!r}>".format(
-            self._pkg.name,
-            self._pkg.architecture,
-            self._pkg.id,
+            self._pkg.name, self._pkg.architecture, self._pkg.id
         )
 
     def __lt__(self, other: Package) -> bool:

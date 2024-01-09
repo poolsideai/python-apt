@@ -1086,10 +1086,7 @@ class TestAptSources(testcommon.TestCase):
             sources = aptsources.sourceslist.SourcesList(
                 True, self.templates, deb822=True
             )
-            distro = aptsources.distro.get_distro(
-                id="Ubuntu",
-                codename="noble",
-            )
+            distro = aptsources.distro.get_distro(id="Ubuntu", codename="noble")
 
             self.assertEqual(len(sources.list), 2)
             distro.get_sources(sources)
@@ -1194,10 +1191,7 @@ class TestAptSources(testcommon.TestCase):
             sources = aptsources.sourceslist.SourcesList(
                 True, self.templates, deb822=True
             )
-            distro = aptsources.distro.get_distro(
-                id="Ubuntu",
-                codename="noble",
-            )
+            distro = aptsources.distro.get_distro(id="Ubuntu", codename="noble")
 
             self.assertEqual(len(sources.list), 2)
             distro.get_sources(sources)
@@ -1317,10 +1311,7 @@ class TestAptSources(testcommon.TestCase):
             sources = aptsources.sourceslist.SourcesList(
                 True, self.templates, deb822=True
             )
-            distro = aptsources.distro.get_distro(
-                id="Ubuntu",
-                codename="noble",
-            )
+            distro = aptsources.distro.get_distro(id="Ubuntu", codename="noble")
 
             self.assertEqual(len(sources.list), 2)
             distro.get_sources(sources)
@@ -1445,10 +1436,7 @@ class TestAptSources(testcommon.TestCase):
             sources = aptsources.sourceslist.SourcesList(
                 True, self.templates, deb822=True
             )
-            distro = aptsources.distro.get_distro(
-                id="Ubuntu",
-                codename="noble",
-            )
+            distro = aptsources.distro.get_distro(id="Ubuntu", codename="noble")
 
             self.assertEqual(len(sources.list), 2)
             distro.get_sources(sources)
