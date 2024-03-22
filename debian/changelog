@@ -1,3 +1,9 @@
+python-apt (2.7.7) unstable; urgency=medium
+
+  * Remove obsolete python3-distutils build-depends (Closes: #1065922)
+
+ -- Julian Andres Klode <jak@debian.org>  Fri, 22 Mar 2024 23:25:32 +0100
+
 python-apt (2.7.6) unstable; urgency=medium
 
   [ Ravi Kant Sharma ]
