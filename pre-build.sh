@@ -1,9 +1,8 @@
 #!/bin/sh
 set -e
 
-echo "Running pycodestyle test"
-black --check . || [ "$IGNORE_BLACK" ] || \
-    [ "$IGNORE_PYCODESTYLE" ] || [ "$IGNORE_PEP8" ] 
+echo "Running pre-commit check"
+pre-commit run -a
 
 dpkg-checkbuilddeps -d 'python3-debian, python3-feedparser'
 
