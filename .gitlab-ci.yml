@@ -1,4 +1,4 @@
-image: debian:unstable
+image: ubuntu:noble
 variables:
   DEBIAN_FRONTEND: noninteractive
 pre-commit:
