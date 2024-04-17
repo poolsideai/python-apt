@@ -1,3 +1,11 @@
+python-apt (2.8.0) unstable; urgency=medium
+
+  * pre-build.sh: Run pre-commit instead of black directly
+  * 2.8.y: Run CI in noble and point gbp.conf at 2.8.y branch
+  * Update the mirrors
+
+ -- Julian Andres Klode <jak@debian.org>  Wed, 17 Apr 2024 12:21:58 +0200
+
 python-apt (2.7.7) unstable; urgency=medium
 
   * Remove obsolete python3-distutils build-depends (Closes: #1065922)
