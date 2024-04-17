@@ -70,12 +70,10 @@ class Section:
         return bool(self.tags)
 
     @typing.overload
-    def get(self, key: str) -> str | None:
-        ...
+    def get(self, key: str) -> str | None: ...
 
     @typing.overload
-    def get(self, key: str, default: T) -> T | str:
-        ...
+    def get(self, key: str, default: T) -> T | str: ...
 
     def get(self, key: str, default: T | None = None) -> T | None | str:
         try:

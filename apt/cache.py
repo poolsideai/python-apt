@@ -118,9 +118,9 @@ class Cache:
         self._callbacks2: dict[
             str, list[tuple[Callable[..., Any], tuple[Any, ...], dict[Any, Any]]]
         ] = {}  # noqa
-        self._weakref: weakref.WeakValueDictionary[
-            str, apt.Package
-        ] = weakref.WeakValueDictionary()  # noqa
+        self._weakref: weakref.WeakValueDictionary[str, apt.Package] = (
+            weakref.WeakValueDictionary()
+        )  # noqa
         self._weakversions: weakref.WeakSet[Version] = weakref.WeakSet()  # noqa
         self._changes_count = -1
         self._sorted_set: list[str] | None = None

@@ -114,7 +114,6 @@ def normalize_key(keystr):
 
 
 class TestAuthKeys(testcommon.TestCase):
-
     """Test handling of keys for signed repositories."""
 
     def setUp(self):

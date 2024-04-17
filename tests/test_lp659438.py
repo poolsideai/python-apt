@@ -33,7 +33,6 @@ import apt
 
 
 class RegressionTestCase(testcommon.TestCase):
-
     """Test suite for LP: #981896, LP: #659438
     'Cannot locate a file for package X'
     """

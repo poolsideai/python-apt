@@ -44,7 +44,6 @@ class AptKeyIDTooShortError(AptKeyError):
 
 
 class TrustedKey:
-
     """Represents a trusted key."""
 
     def __init__(self, name: str, keyid: str, date: str) -> None:
