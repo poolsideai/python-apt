@@ -1,3 +1,10 @@
+python-apt (2.9.0) unstable; urgency=medium
+
+  * Revert "2.8.y: Run CI in noble and point gbp.conf at 2.8.y branch"
+  * Update pre-commit hooks and run them
+
+ -- Julian Andres Klode <jak@debian.org>  Thu, 02 May 2024 10:06:29 +0200
+
 python-apt (2.8.0) unstable; urgency=medium
 
   * pre-build.sh: Run pre-commit instead of black directly

@@ -11,7 +11,6 @@ http://ftp.tu-graz.ac.at/mirror/debian/
 http://mirror.alwyzon.net/debian/
 #LOC:AU
 http://debian.mirror.digitalpacific.com.au/debian/
-http://debian.mirror.serversaustralia.com.au/debian/
 http://ftp.au.debian.org/debian/
 http://mirror.aarnet.edu.au/debian/
 http://mirror.amaze.com.au/debian/
@@ -35,16 +34,11 @@ http://debian.mnet.bg/debian/
 http://debian.telecoms.bg/debian/
 http://ftp.bg.debian.org/debian/
 http://ftp.uni-sofia.bg/debian/
-http://mirror.telepoint.bg/debian/
 http://mirrors.netix.net/debian/
 #LOC:BR
-http://alcateia.ufscar.br/debian/
 http://debian.c3sl.ufpr.br/debian/
 http://ftp.br.debian.org/debian/
-#LOC:BY
-http://ftp.by.debian.org/debian/
-http://ftp.byfly.by/debian/
-http://mirror.datacenter.by/debian/
+http://mirror.uepg.br/debian/
 #LOC:CA
 http://debian.linux.n0c.ca/debian/
 http://debian.mirror.iweb.ca/debian/
@@ -70,10 +64,8 @@ http://elmirror.cl/debian/
 http://ftp.cl.debian.org/debian/
 http://mirror.hnd.cl/debian/
 http://mirror.insacom.cl/debian/
-http://mirror.ufro.cl/debian/
 #LOC:CN
 http://ftp.cn.debian.org/debian/
-http://mirror.bjtu.edu.cn/debian/
 http://mirror.lzu.edu.cn/debian/
 http://mirror.nju.edu.cn/debian/
 http://mirror.nyist.edu.cn/debian/
@@ -85,6 +77,7 @@ http://mirrors.jlu.edu.cn/debian/
 http://mirrors.neusoft.edu.cn/debian/
 http://mirrors.tuna.tsinghua.edu.cn/debian/
 http://mirrors.ustc.edu.cn/debian/
+http://mirrors.zju.edu.cn/debian/
 #LOC:CR
 http://debianmirror.una.ac.cr/debian/
 http://mirrors.ucr.ac.cr/debian/
@@ -105,6 +98,7 @@ http://artfiles.org/debian/
 http://de.mirrors.clouvider.net/debian/
 http://debian.charite.de/debian/
 http://debian.inf.tu-dresden.de/debian/
+http://debian.intergenia.de/debian/
 http://debian.mirror.iphh.net/debian/
 http://debian.mirror.lrz.de/debian/
 http://debian.netcologne.de/debian/
@@ -128,7 +122,6 @@ http://mirror.23m.com/debian/
 http://mirror.de.leaseweb.net/debian/
 http://mirror.dogado.de/debian/
 http://mirror.eu.oneandone.net/debian/
-http://mirror.fra.macarne.com/debian/
 http://mirror.informatik.tu-freiberg.de/debian/
 http://mirror.ipb.de/debian/
 http://mirror.netzwerge.de/debian/
@@ -157,6 +150,7 @@ http://repo.ifca.es/debian/
 http://softlibre.unizar.es/debian/
 http://ulises.hostalia.com/debian/
 #LOC:FI
+http://debian.web.trex.fi/debian/
 http://ftp.fi.debian.org/debian/
 http://www.nic.funet.fi/debian/
 #LOC:FR
@@ -170,6 +164,7 @@ http://debian.univ-tlse2.fr/debian/
 http://ftp.ec-m.fr/debian/
 http://ftp.fr.debian.org/debian/
 http://ftp.lip6.fr/pub/linux/distributions/debian/
+http://ftp.u-picardie.fr/debian/
 http://ftp.u-strasbg.fr/debian/
 http://ftp.univ-pau.fr/linux/mirrors/debian/
 http://miroir.univ-lorraine.fr/debian/
@@ -190,7 +185,6 @@ http://mirror.lon.macarne.com/debian/
 http://mirror.mythic-beasts.com/debian/
 http://mirror.ox.ac.uk/debian/
 http://mirror.positive-internet.com/debian/
-http://mirror.vinehost.net/debian/
 http://mirrors.coreix.net/debian/
 http://mirrorservice.org/sites/ftp.debian.org/debian/
 http://uk.mirrors.clouvider.net/debian/
@@ -218,6 +212,7 @@ http://mr.heru.id/debian/
 #LOC:IL
 http://debian.interhost.co.il/debian/
 #LOC:IN
+http://mirror.cse.iitk.ac.in/debian/
 http://mirrors.iitd.ac.in/debian/
 #LOC:IR
 http://archive.debian.petiak.ir/debian/
@@ -257,6 +252,7 @@ http://mirror.siwoo.org/debian/
 http://mirror.hoster.kz/debian/
 http://mirror.ps.kz/debian/
 #LOC:LT
+http://debian.balt.net/debian/
 http://debian.mirror.vu.lt/debian/
 http://ftp.lt.debian.org/debian/
 http://mirror.litnet.lt/debian/
@@ -275,8 +271,6 @@ http://mirror.as43289.net/debian/
 http://mirror-mk.interspace.com/debian/
 http://mirror.onevip.mk/debian/
 #LOC:NC
-http://debian.nautile.nc/debian/
-http://ftp.nc.debian.org/debian/
 http://mirror.lagoon.nc/debian/
 #LOC:NL
 http://debian.snt.utwente.nl/debian/
@@ -338,6 +332,7 @@ http://ftpmirror1.infania.net/debian/
 http://mirror.zetup.net/debian/
 http://mirrors.glesys.net/debian/
 #LOC:SG
+http://mirror.coganng.com/debian/
 http://mirror.djvg.sg/debian/
 http://mirror.sg.gs/debian/
 #LOC:SI
@@ -359,7 +354,6 @@ http://ftp.tr.debian.org/debian/
 http://debian.cs.nycu.edu.tw/debian/
 http://debian.csie.ncku.edu.tw/debian/
 http://debian.csie.ntu.edu.tw/debian/
-http://ftp.tku.edu.tw/debian/
 http://ftp.tw.debian.org/debian/
 http://opensource.nchc.org.tw/debian/
 http://tw1.mirror.blendbyte.net/debian/
