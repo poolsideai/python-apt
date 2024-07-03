@@ -814,7 +814,7 @@ Resolving Dependencies with :class:`ProblemResolver`
     .. attribute:: version_list
 
         A list of :class:`Version` objects for all versions of this package
-        available in the cache.
+        available in the cache, ordered highest to lowest.
 
     **States**:
 

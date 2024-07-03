@@ -711,7 +711,7 @@ static PyGetSetDef PackageGetSet[] = {
      "Boolean value determining whether the package has the 'important'\n"
      "flag set ('Important: yes' in the Packages file). No longer used."},
     {"version_list",PackageGetVersionList,0,
-     "A list of all apt_pkg.Version objects for this package."},
+     "A list of all apt_pkg.Version objects for this package, ordered highest to lowest."},
     {"current_ver",PackageGetCurrentVer,0,
      "The version of the package currently installed or None."},
     {"has_versions",PackageGetHasVersions,0,
