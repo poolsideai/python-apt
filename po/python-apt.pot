@@ -186,7 +186,7 @@ msgid "Non-DFSG-compatible Software"
 msgstr ""
 
 #. TRANSLATORS: %s is a country
-#: ../aptsources/distro.py:206 ../aptsources/distro.py:461
+#: ../aptsources/distro.py:207 ../aptsources/distro.py:462
 #, python-format
 msgid "Server for %s"
 msgstr ""
@@ -194,12 +194,12 @@ msgstr ""
 #. More than one server is used. Since we don't handle this case
 #. in the user interface we set "custom servers" to true and
 #. append a list of all used servers
-#: ../aptsources/distro.py:225 ../aptsources/distro.py:237
-#: ../aptsources/distro.py:258
+#: ../aptsources/distro.py:226 ../aptsources/distro.py:238
+#: ../aptsources/distro.py:259
 msgid "Main server"
 msgstr ""
 
-#: ../aptsources/distro.py:267
+#: ../aptsources/distro.py:268
 msgid "Custom servers"
 msgstr ""
 
