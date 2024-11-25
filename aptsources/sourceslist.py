@@ -724,7 +724,7 @@ class SourcesList:
         # read sources.list.d
         partsdir = apt_pkg.config.find_dir("Dir::Etc::sourceparts")
         if partsdir != "/dev/null" and os.path.exists(partsdir):
-            for file in os.listdir(partsdir):
+            for file in sorted(os.listdir(partsdir)):
                 if (self.deb822 and file.endswith(".sources")) or file.endswith(
                     ".list"
                 ):
