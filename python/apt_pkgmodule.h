@@ -108,6 +108,8 @@ extern PyTypeObject PyPackageManager_Type;
 extern PyTypeObject PyPackageManager2_Type;
 PyObject *GetPkgManager(PyObject *Self,PyObject *Args);
 
+// packagemanager progress
+extern PyTypeObject PyPackageManagerProgressFancy_Type;
 
 // PkgRecords Stuff
 extern PyTypeObject PyPackageRecords_Type;

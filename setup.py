@@ -80,6 +80,7 @@ files = [
     "indexfile.cc",
     "metaindex.cc",
     "pkgmanager.cc",
+    "pkgmanagerprogress.cc",
     "pkgrecords.cc",
     "pkgsrcrecords.cc",
     "policy.cc",

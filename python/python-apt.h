@@ -130,7 +130,9 @@ struct _PyAptPkgAPIStruct {
     PyTypeObject *packagemanager_type;
     PyObject* (*packagemanager_fromcpp)(pkgPackageManager* const &obj, bool Delete, PyObject *Owner);
     pkgPackageManager*& (*packagemanager_tocpp)(PyObject *self);
-    
+
+    PyTypeObject *packagemanagerprogresfancy_type;
+
     PyTypeObject *packagerecords_type;
     void *packagerecords_fromcpp; // FIXME: need packagerecords_fromcpp
     void *packagerecords_tocpp; // FIXME: need packagerecords_tocpp
