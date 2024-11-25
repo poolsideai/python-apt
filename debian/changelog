@@ -1,3 +1,26 @@
+python-apt (2.9.1) unstable; urgency=medium
+
+  [ Michael Vogt ]
+  * python: expose APT::Progress::PackageManagerFancy
+
+  [ Corentin Noël ]
+  * aptsources: Use freedesktop_os_release instead of lsb_release
+  * aptsources: Allow to query the codenames the distro derives from
+
+  [ Julian Andres Klode ]
+  * Document that version_list is in descending order
+  * aptsources: Sort the list of sources.list.d sources (LP: #2089543)
+  * Remove apt.auth module, apt-key is going away (Closes: #1088222)
+  * setup.py: Stop overriding C++ standards version
+
+  [ Niels Thykier ]
+  * Mark `fakeroot` as a test-only build-dependency
+
+  [ Boyuan Yang ]
+  * Refresh Simplified Chinese (zh_CN) translation
+
+ -- Julian Andres Klode <jak@debian.org>  Mon, 25 Nov 2024 13:27:56 +0100
+
 python-apt (2.9.0) unstable; urgency=medium
 
   * Revert "2.8.y: Run CI in noble and point gbp.conf at 2.8.y branch"
