@@ -40,15 +40,13 @@ Salsa CI:
   stage: package
   trigger:
     include: debian/salsa-ci.yml
-#    strategy: depend
+    strategy: depend
   rules:
-    - if: $CI_PIPELINE_SOURCE == "push" # Only trigger pipelines on pushes
-      when: manual
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" # Or on merge requests
-      when: always
-    - if: $CI_PIPELINE_SOURCE == "schedule"  # Or on scheduled pipelines
-      when: always
-#    - when: never  # never run this job for other pipeline sources
+    - changes:
+        paths:
+          - debian/**/*
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
 
 # If Salsa CI is not running at
 # https://salsa.debian.org/%{project_path}/-/pipelines, ensure that
