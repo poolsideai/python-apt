@@ -43,7 +43,8 @@ class Distribution:
     ):
         """Container for distribution specific informations"""
         # OS information
-        self.id = id
+        # We have switched to lower-case ids from os-release, let's fix broken ones.
+        self.id = id.lower()
         self.codename = codename
         self.description = description
         self.release = release
@@ -539,6 +540,8 @@ def get_distro(
     If no paramter are given the distro will be auto detected
     """
     # make testing easier
+    # We have switched to lower-case ids from os-release, let's fix broken ones.
+    id = id.lower()
     if not (id and codename and description and release):
         os_release = platform.freedesktop_os_release()
         id = os_release["ID"]
