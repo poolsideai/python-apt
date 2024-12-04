@@ -1,3 +1,13 @@
+python-apt (2.9.2) unstable; urgency=medium
+
+  * aptsources: Distribution IDs are now lowercase
+  * aptsources: Handle missing VERSION_ID in os-release (Closes: #1088402)
+  * Hack around toolchain to pick std symbols from libstdc++ (Closes: #1088262)
+  * Update mirrors
+  * Strings are really lower case now, but old ones should continue to work
+
+ -- Julian Andres Klode <jak@debian.org>  Wed, 04 Dec 2024 18:04:04 +0100
+
 python-apt (2.9.1) unstable; urgency=medium
 
   [ Michael Vogt ]
