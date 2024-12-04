@@ -99,7 +99,8 @@ files = sorted(["python/" + fname for fname in files], key=lambda s: s[:-3])
 apt_pkg = Extension(
     "apt_pkg",
     files,
-    libraries=["apt-pkg"],
+    # Hack around resolution order for duplicate versioned symbols so we prefer the stdc++ ones
+    libraries=["stdc++", "apt-pkg"],
     extra_compile_args=[
         "-Wno-write-strings",
         "-DAPT_8_CLEANER_HEADERS",
