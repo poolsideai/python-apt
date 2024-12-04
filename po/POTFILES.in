@@ -1,6 +1,6 @@
 [encoding: UTF-8]
-[type: gettext/rfc822deb] data/templates/Ubuntu.info.in
-[type: gettext/rfc822deb] data/templates/Debian.info.in
+[type: gettext/rfc822deb] data/templates/ubuntu.info.in
+[type: gettext/rfc822deb] data/templates/debian.info.in
 aptsources/distro.py
 apt/package.py
 apt/debfile.py

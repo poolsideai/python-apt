@@ -554,22 +554,22 @@ def get_distro(
             )
             if like_codename is not None:
                 like_codenames[like_id] = like_codename
-        if id == "Ubuntu":
+        if id == "ubuntu":
             channel = _system_image_channel()
             if channel is not None and "ubuntu-rtm/" in channel:
-                id = "Ubuntu-RTM"
+                id = "ubuntu-rtm"
                 codename = channel.rsplit("/", 1)[1].split("-", 1)[0]
                 description = codename
                 release = codename
-    if id == "Ubuntu":
+    if id == "ubuntu":
         return UbuntuDistribution(
             id, codename, description, release, is_like, like_codenames
         )
-    if id == "Ubuntu-RTM":
+    if id == "ubuntu-rtm":
         return UbuntuRTMDistribution(
             id, codename, description, release, is_like, like_codenames
         )
-    elif id == "Debian":
+    elif id == "debian":
         return DebianDistribution(
             id, codename, description, release, is_like, like_codenames
         )
