@@ -544,7 +544,7 @@ def get_distro(
         id = os_release["ID"]
         codename = os_release["VERSION_CODENAME"]
         description = os_release["PRETTY_NAME"]
-        release = os_release["VERSION_ID"]
+        release = os_release.get("VERSION_ID")
         is_like = os_release.get("ID_LIKE", [])
         # One can specify the derived codename like UBUNTU_VERSION_CODENAME to signal
         # that it is a subdistribution of it.
