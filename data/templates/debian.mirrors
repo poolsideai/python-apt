@@ -151,7 +151,6 @@ http://mirrors.xtom.ee/debian/
 http://debian.grn.cat/debian/
 http://debian.redimadrid.es/debian/
 http://debian.redparra.com/debian/
-http://debian.uvigo.es/debian/
 http://ftp.caliu.cat/debian/
 http://ftp.cica.es/debian/
 http://ftp.es.debian.org/debian/
@@ -229,6 +228,7 @@ http://mirror.nitc.ac.in/debian/
 #LOC:IR
 http://archive.debian.petiak.ir/debian/
 http://mirror.aminidc.com/debian/
+http://mirror.iranserver.com/debian/
 http://mirrors.pardisco.co/debian/
 #LOC:IS
 http://ftp.is.debian.org/debian/
@@ -281,6 +281,8 @@ http://mirror.as43289.net/debian/
 #LOC:MK
 http://mirror-mk.interspace.com/debian/
 http://mirror.onevip.mk/debian/
+#LOC:MX
+http://lidsol.fi-b.unam.mx/debian/
 #LOC:NC
 http://debian.nautile.nc/debian/
 http://ftp.nc.debian.org/debian/
@@ -289,6 +291,7 @@ http://mirror.lagoon.nc/debian/
 http://debian.snt.utwente.nl/debian/
 http://ftp.nl.debian.org/debian/
 http://mirror.bgp.rodeo/debian/
+http://mirror.duocast.net/debian/
 http://mirror.i3d.net/debian/
 http://mirror.nl.datapacket.com/debian/
 http://mirror.nl.leaseweb.net/debian/
