@@ -541,7 +541,8 @@ def get_distro(
     """
     # make testing easier
     # We have switched to lower-case ids from os-release, let's fix broken ones.
-    id = id.lower()
+    if id is not None:
+        id = id.lower()
     if not (id and codename and description and release):
         os_release = platform.freedesktop_os_release()
         id = os_release["ID"]
