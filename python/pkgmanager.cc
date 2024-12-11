@@ -54,12 +54,13 @@ static PyObject *PkgManagerDoInstall(PyObject *Self,PyObject *Args,PyObject *kwd
    if (PyArg_ParseTupleAndKeywords(Args,kwds,"|iO", kwlist,&status_fd, &pyprogress) == 0)
       return 0;
 
+   std::unique_ptr<APT::Progress::PackageManager> fdProgress;
    APT::Progress::PackageManager *progress;
    if (pyprogress != NULL) {
        progress = GetCpp<APT::Progress::PackageManager*>(pyprogress);
    } else {
-       APT::Progress::PackageManagerProgressFd fdprogress = APT::Progress::PackageManagerProgressFd(status_fd);
-       progress = &fdprogress;
+       fdProgress = std::make_unique<APT::Progress::PackageManagerProgressFd>(status_fd);
+       progress = fdProgress.get();
    }
    pkgPackageManager::OrderResult res = pm->DoInstall(progress);
 
