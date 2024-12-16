@@ -22,8 +22,9 @@ libdir = get_library_dir()
 if libdir:
     sys.path.insert(0, libdir)
 
-import apt_pkg
 import testcommon
+
+import apt_pkg
 
 
 class TestOpenMaybeClearSigned(testcommon.TestCase):
