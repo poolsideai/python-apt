@@ -1,3 +1,15 @@
+python-apt (2.9.4) unstable; urgency=high
+
+  * pre-commit: update
+  * tests/test_tagfile.py: isort
+  * Fix FTBFS with Sphinx 8.0 (Closes: #1090037)
+  * tests, apt: run isort
+  * Update mirror lists
+  * urgency=high due to `Handle id being None in get_distro()` being blocked
+    by the sphinx issue.
+
+ -- Julian Andres Klode <jak@debian.org>  Tue, 17 Dec 2024 11:12:09 +0100
+
 python-apt (2.9.3) unstable; urgency=medium
 
   * pkgmanager.cc: Fix lifetime of fdprogress, avoids hanging install
