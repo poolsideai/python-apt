@@ -71,6 +71,7 @@ http://mirror2.infomaniak.com/debian/
 http://pkg.adfinis-on-exoscale.ch/debian/
 #LOC:CL
 http://debian.redlibre.cl/debian/
+http://elmirror.cl/debian/
 http://ftp.cl.debian.org/debian/
 http://mirror.hnd.cl/debian/
 http://mirror.insacom.cl/debian/
@@ -251,6 +252,7 @@ http://mirrors.xtom.jp/debian/
 http://repo.jing.rocks/debian/
 #LOC:KE
 http://debian.mirror.ac.ke/debian/
+http://debian.mirror.liquidtelecom.com/debian/
 #LOC:KH
 http://mirror.sabay.com.kh/debian/
 #LOC:KR

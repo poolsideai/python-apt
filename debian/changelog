@@ -1,3 +1,12 @@
+python-apt (2.9.5) unstable; urgency=high
+
+  * Remove tanglu information
+  * data: Fix mirror location file name
+  * urgency=high due to `Handle id being None in get_distro()` being blocked
+    by a mirror issue for some reason now.
+
+ -- Julian Andres Klode <jak@debian.org>  Fri, 20 Dec 2024 11:38:57 +0100
+
 python-apt (2.9.4) unstable; urgency=high
 
   * pre-commit: update

@@ -62,6 +62,8 @@ https://deb.campolargo.pr.gov.br/ubuntu/archive/
 https://mirror.uepg.br/ubuntu/
 https://ubuntu.letscloud.io/ubuntu/
 https://ubuntu.mirror.letscloud.io/
+#LOC:BW
+http://mirror.retentionrange.co.bw/ubuntu/
 #LOC:BY
 http://ftp.byfly.by/ubuntu/
 http://mirror.datacenter.by/ubuntu/
@@ -205,6 +207,7 @@ http://dafi.inf.um.es/ubuntu/
 http://ftp.caliu.cat/pub/distribucions/ubuntu/archive/
 http://ftp.udc.es/ubuntu/
 http://mirror.raiolanetworks.com/ubuntu/
+http://softlibre.unizar.es/ubuntu/archive/
 http://ubuntu.cica.es/ubuntu/
 http://ubuntu.grn.cat/ubuntu/
 https://ftp.csuc.cat/ubuntu/archive/
@@ -277,8 +280,10 @@ http://kebo.vlsm.org/ubuntu/
 http://mirror.biznetgio.com/ubuntu/
 http://mirror.cepatcloud.id/ubuntu/
 http://mirror.deace.id/ubuntu/
+http://mirror.poliwangi.ac.id/ubuntu/
 http://mirror.unej.ac.id/ubuntu/
 http://suro.ubaya.ac.id/ubuntu/
+https://buaya.klas.or.id/ubuntu/
 https://cdn.repo.cloudeka.id/ubuntu/
 https://cdn.ubuntu.repo.cloudeka.id/ubuntu/
 https://linux.domainesia.com/ubuntu/ubuntu-archive/
@@ -362,7 +367,6 @@ https://linux.yz.yamagata-u.ac.jp/ubuntu/
 https://mirror.hashy0917.net/ubuntu/
 https://repo.jing.rocks/ubuntu-ports/
 https://repo.jing.rocks/ubuntu/
-https://ubuntu.tokyo.macarne.com/
 #LOC:KG
 http://mir.linux.kg/ubuntu/
 #LOC:KH
@@ -410,6 +414,8 @@ http://ubuntu.dts.mg/ubuntu/
 http://mirror-mk.interspace.com/ubuntu/
 http://mirror.onevip.mk/ubuntu/
 http://mirror.t-home.mk/ubuntu/
+#LOC:MM
+https://mirrors.ygn.mmix.net.mm/ubuntu/
 #LOC:MN
 http://mirror.datacenter.mn/ubuntu/
 #LOC:MU
@@ -566,6 +572,7 @@ https://mirror.twds.com.tw/ubuntu/
 https://tw1.mirror.blendbyte.net/ubuntu/
 https://ubuntu.ccns.ncku.edu.tw/ubuntu/
 #LOC:TZ
+http://deb-mirror.habari.co.tz/ubuntu/
 http://mirror.aptus.co.tz/pub/ubuntuarchive/
 #LOC:UA
 http://mirror.mirohost.net/ubuntu/
