@@ -5,7 +5,7 @@ Suite: {series}
 RepositoryType: deb
 BaseURI: https://deb.debian.org/debian/
 MatchURI: ((http|https|ftp)[0-9]*\.([a-z]*\.){{0,1}}|deb\.|httpredir\.)debian\.org
-MirrorsFile: Debian.mirrors
+MirrorsFile: debian.mirrors
 _Description: Debian {version} '{codename}'
 Component: main
 _CompDescription: Officially supported
@@ -21,7 +21,7 @@ Suite: {series}
 RepositoryType: deb
 BaseURI: https://deb.debian.org/debian/
 MatchURI: ((http|https|ftp)[0-9]*\.([a-z]*\.){{0,1}}|deb\.|httpredir\.)debian\.org
-MirrorsFile: Debian.mirrors
+MirrorsFile: debian.mirrors
 _Description: Debian {version} '{codename}'
 Component: main
 _CompDescription: Officially supported
@@ -62,7 +62,7 @@ Suite: stable
 RepositoryType: deb
 BaseURI: https://deb.debian.org/debian/
 MatchURI: ((http|https|ftp)[0-9]*\.([a-z]*\.){0,1}|deb\.|httpredir\.)debian\.org
-MirrorsFile: Debian.mirrors
+MirrorsFile: debian.mirrors
 _Description: Debian current stable release
 Component: main
 _CompDescription: Officially supported
@@ -77,7 +77,7 @@ Suite: testing
 RepositoryType: deb
 BaseURI: https://deb.debian.org/debian/
 MatchURI: ((http|https|ftp)[0-9]*\.([a-z]*\.){0,1}|deb\.|httpredir\.)debian\.org
-MirrorsFile: Debian.mirrors
+MirrorsFile: debian.mirrors
 _Description: Debian testing
 Component: main
 _CompDescription: Officially supported
@@ -92,7 +92,7 @@ Suite: sid
 RepositoryType: deb
 BaseURI: https://deb.debian.org/debian/
 MatchURI: ((http|https|ftp)[0-9]*\.([a-z]*\.){0,1}|deb\.|httpredir\.)debian\.org
-MirrorsFile: Debian.mirrors
+MirrorsFile: debian.mirrors
 _Description: Debian 'Sid' (unstable)
 Component: main
 _CompDescription: Officially supported
@@ -107,7 +107,7 @@ Suite: unstable
 RepositoryType: deb
 BaseURI: https://deb.debian.org/debian/
 MatchURI: ((http|https|ftp)[0-9]*\.([a-z]*\.){0,1}|deb\.|httpredir\.)debian\.org
-MirrorsFile: Debian.mirrors
+MirrorsFile: debian.mirrors
 _Description: Debian 'Sid' (unstable)
 Component: main
 _CompDescription: Officially supported

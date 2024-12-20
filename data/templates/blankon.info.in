@@ -4,8 +4,8 @@ Suite: tambora
 RepositoryType: deb
 BaseURI: http://arsip.blankonlinux.or.id/blankon/
 MatchURI: arsip.blankonlinux.or.id/blankon
-MirrorsFile-amd64: Blankon.mirrors
-MirrorsFile-i386: Blankon.mirrors
+MirrorsFile-amd64: blankon.mirrors
+MirrorsFile-i386: blankon.mirrors
 _Description: Blankon 10.0 'Tambora'
 Component: main
 _CompDescription: Officially supported
@@ -47,8 +47,8 @@ Suite: suroboyo
 RepositoryType: deb
 BaseURI: http://arsip.blankonlinux.or.id/blankon/
 MatchURI: arsip.blankonlinux.or.id/blankon
-MirrorsFile-amd64: Blankon.mirrors
-MirrorsFile-i386: Blankon.mirrors
+MirrorsFile-amd64: blankon.mirrors
+MirrorsFile-i386: blankon.mirrors
 _Description: Blankon 9.0 'Suroboyo'
 Component: main
 _CompDescription: Officially supported
@@ -90,8 +90,8 @@ Suite: rote
 RepositoryType: deb
 BaseURI: http://arsip.blankonlinux.or.id/blankon/
 MatchURI: arsip.blankonlinux.or.id/blankon
-MirrorsFile-amd64: Blankon.mirrors
-MirrorsFile-i386: Blankon.mirrors
+MirrorsFile-amd64: blankon.mirrors
+MirrorsFile-i386: blankon.mirrors
 _Description: Blankon 8.0 'Rote'
 Component: main
 _CompDescription: Officially supported
@@ -133,8 +133,8 @@ Suite: pattimura
 RepositoryType: deb
 BaseURI: http://arsip.blankonlinux.or.id/blankon-legacy/
 MatchURI: arsip.blankonlinux.or.id/blankon-legacy
-MirrorsFile-amd64: Blankon.mirrors
-MirrorsFile-i386: Blankon.mirrors
+MirrorsFile-amd64: blankon.mirrors
+MirrorsFile-i386: blankon.mirrors
 _Description: Blankon 7.0 'Pattimura'
 Component: main
 _CompDescription: Officially supported
@@ -176,8 +176,8 @@ Suite: ombilin
 RepositoryType: deb
 BaseURI: http://arsip.blankonlinux.or.id/blankon-legacy/
 MatchURI: arsip.blankonlinux.or.id/blankon-legacy
-MirrorsFile-amd64: Blankon.mirrors
-MirrorsFile-i386: Blankon.mirrors
+MirrorsFile-amd64: blankon.mirrors
+MirrorsFile-i386: blankon.mirrors
 _Description: Blankon 6.0 'Ombilin'
 Component: main
 _CompDescription: Officially supported
@@ -219,8 +219,8 @@ Suite: nanggar
 RepositoryType: deb
 BaseURI: http://arsip.blankonlinux.or.id/blankon-legacy/
 MatchURI: arsip.blankonlinux.or.id/blankon-legacy
-MirrorsFile-amd64: Blankon.mirrors
-MirrorsFile-i386: Blankon.mirrors
+MirrorsFile-amd64: blankon.mirrors
+MirrorsFile-i386: blankon.mirrors
 _Description: Blankon 5.0 'Nanggar'
 Component: main
 _CompDescription: Officially supported
@@ -262,8 +262,8 @@ Suite: meuligoe
 RepositoryType: deb
 BaseURI: http://arsip.blankonlinux.or.id/blankon-legacy/
 MatchURI: arsip.blankonlinux.or.id/blankon-legacy
-MirrorsFile-amd64: Blankon.mirrors
-MirrorsFile-i386: Blankon.mirrors
+MirrorsFile-amd64: blankon.mirrors
+MirrorsFile-i386: blankon.mirrors
 _Description: Blankon 4.1 'Meuligoe'
 Component: main
 _CompDescription: Officially supported
@@ -299,8 +299,8 @@ Suite: lontara
 RepositoryType: deb
 BaseURI: http://arsip.blankonlinux.or.id/blankon-legacy/
 MatchURI: arsip.blankonlinux.or.id/blankon-legacy
-MirrorsFile-amd64: Blankon.mirrors
-MirrorsFile-i386: Blankon.mirrors
+MirrorsFile-amd64: blankon.mirrors
+MirrorsFile-i386: blankon.mirrors
 _Description: BlankOn 3.0 'Lontara'
 Component: main
 _CompDescription: Officially supported
@@ -336,8 +336,8 @@ Suite: konde
 RepositoryType: deb
 BaseURI: http://arsip.blankonlinux.or.id/blankon-legacy/
 MatchURI: arsip.blankonlinux.or.id/blankon-legacy
-MirrorsFile-amd64: Blankon.mirrors
-MirrorsFile-i386: Blankon.mirrors
+MirrorsFile-amd64: blankon.mirrors
+MirrorsFile-i386: blankon.mirrors
 _Description: Blankon 2.0 'Konde'
 Component: main
 _CompDescription: Officially supported

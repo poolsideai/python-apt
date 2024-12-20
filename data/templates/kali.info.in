@@ -4,7 +4,7 @@ Suite: kali-rolling
 RepositoryType: deb
 BaseURI: http://http.kali.org/kali/
 MatchURI: (kali\.download|(archive.*|http)\.kali\.org)
-MirrorsFile: Kali.mirrors
+MirrorsFile: kali.mirrors
 _Description: Kali Rolling
 Component: main
 _CompDescription: Officially supported
@@ -17,7 +17,7 @@ Suite: kali-dev
 RepositoryType: deb
 BaseURI: http://http.kali.org/kali/
 MatchURI: (kali\.download|(archive.*|http)\.kali\.org)
-MirrorsFile: Kali.mirrors
+MirrorsFile: kali.mirrors
 _Description: Kali Development Release
 Component: main
 _CompDescription: Officially supported

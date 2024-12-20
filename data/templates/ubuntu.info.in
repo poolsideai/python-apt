@@ -8,8 +8,8 @@ BaseURI-amd64: http://archive.ubuntu.com/ubuntu
 MatchURI-amd64: archive.ubuntu.com/ubuntu
 BaseURI-i386: http://archive.ubuntu.com/ubuntu
 MatchURI-i386: archive.ubuntu.com/ubuntu
-MirrorsFile-amd64: Ubuntu.mirrors
-MirrorsFile-i386: Ubuntu.mirrors
+MirrorsFile-amd64: ubuntu.mirrors
+MirrorsFile-i386: ubuntu.mirrors
 _Description: Ubuntu development series
 Component: main
 _CompDescription: Officially supported
@@ -104,8 +104,8 @@ BaseURI-amd64: http://archive.ubuntu.com/ubuntu
 MatchURI-amd64: archive.ubuntu.com/ubuntu
 BaseURI-i386: http://archive.ubuntu.com/ubuntu
 MatchURI-i386: archive.ubuntu.com/ubuntu
-MirrorsFile-amd64: Ubuntu.mirrors
-MirrorsFile-i386: Ubuntu.mirrors
+MirrorsFile-amd64: ubuntu.mirrors
+MirrorsFile-i386: ubuntu.mirrors
 _Description: Ubuntu {version} '{codename}'
 Component: main
 _CompDescription: Officially supported

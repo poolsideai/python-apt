@@ -5,7 +5,7 @@ Suite: parkes
 RepositoryType: deb
 BaseURI: http://archive.gnewsense.org/gnewsense/
 MatchURI: archive.gnewsense.org/gnewsense
-MirrorsFile: gNewSense.mirrors
+MirrorsFile: gnewsense.mirrors
 Description: gNewSense 3 - "parkes"
 Component: main
 _CompDescription: Main supported software
@@ -23,7 +23,7 @@ Suite: deltah
 RepositoryType: deb
 BaseURI: http://archive.gnewsense.org/gnewsense/
 MatchURI: archive.gnewsense.org/gnewsense
-MirrorsFile: gNewSense.mirrors
+MirrorsFile: gnewsense.mirrors
 _Description: gNewSense "deltah"
 Component: main
 _CompDescription: Main supported software
