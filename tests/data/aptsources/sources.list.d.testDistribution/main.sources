@@ -44,11 +44,6 @@ Suites: sid
 Components: main
 
 Types: deb
-URIs: http://archive.tanglu.org/tanglu
-Suites: aequorea
-Components: main
-
-Types: deb
 URIs: http://ftp.hosteurope.de/mirror/archive.ubuntu.com/
 Suites: hardy
 Components: main
