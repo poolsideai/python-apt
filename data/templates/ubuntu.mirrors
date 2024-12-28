@@ -62,8 +62,6 @@ https://deb.campolargo.pr.gov.br/ubuntu/archive/
 https://mirror.uepg.br/ubuntu/
 https://ubuntu.letscloud.io/ubuntu/
 https://ubuntu.mirror.letscloud.io/
-#LOC:BW
-http://mirror.retentionrange.co.bw/ubuntu/
 #LOC:BY
 http://ftp.byfly.by/ubuntu/
 http://mirror.datacenter.by/ubuntu/
@@ -144,6 +142,7 @@ https://mirror.it4i.cz/ubuntu/
 #LOC:DE
 ftp://ftp.fu-berlin.de/linux/ubuntu/
 http://artfiles.org/ubuntu.com/
+http://de.archive.ubuntu.anime.army/
 http://ftp-stud.hs-esslingen.de/ubuntu/
 http://ftp.fau.de/ubuntu/
 http://ftp.halifax.rwth-aachen.de/ubuntu/
@@ -336,7 +335,7 @@ https://ir.ubuntu.sindad.cloud/ubuntu/
 https://mirror.arvancloud.ir/ubuntu/
 https://mirror.iranserver.com/ubuntu/
 https://mirrors.pardisco.co/ubuntu/
-https://ubuntu.hostiran.ir/ubuntuarchive/
+https://ubuntu.bardia.tech/
 https://ubuntu.mobinhost.com/ubuntu/
 https://ubuntu.pars.host/
 https://ubuntu.parsvds.com/ubuntu/
@@ -426,8 +425,6 @@ http://ubuntu.tuxuri.com/ubuntu/
 https://mirrors.gbnetwork.com/ubuntu/
 https://mirrors.ipserverone.com/ubuntu/
 https://ubuntu.mirror.thegigabit.com/
-#LOC:NA
-http://download.nust.na/pub/ubuntu/ubuntu/
 #LOC:NC
 http://archive.ubuntu.nautile.nc/ubuntu/
 http://ubuntu.lagoon.nc/ubuntu/
@@ -557,6 +554,7 @@ http://ubuntu.vargonen.com/ubuntu/
 https://kozyatagi.mirror.guzel.net.tr/ubuntu/
 https://mirror.alastyr.com/ubuntu/ubuntu-archive/
 https://mirror.rabisu.com/ubuntu/ubuntu-archive/
+https://mirror.sh.com.tr/ubuntu/
 https://mirror.verinomi.com/ubuntu/ubuntu-archive/
 #LOC:TW
 http://free.nchc.org.tw/ubuntu/
@@ -593,7 +591,6 @@ http://ftp.ussg.iu.edu/linux/ubuntu/
 http://mirror.arizona.edu/ubuntu/
 http://mirror.brightridge.com/ubuntuarchive/
 http://mirror.cc.vt.edu/pub2/ubuntu/
-http://mirror.cogentco.com/pub/linux/ubuntu/
 http://mirror.cs.jmu.edu/pub/ubuntu/
 http://mirror.math.princeton.edu/pub/ubuntu/
 http://mirror.math.ucdavis.edu/ubuntu/
@@ -664,7 +661,6 @@ https://mirror.umd.edu/ubuntu/
 https://mirror.us.leaseweb.net/ubuntu/
 https://mirror.us.mirhosting.net/ubuntu/
 https://mirrors.bloomu.edu/ubuntu/
-https://mirrors.bmcc.edu/ubuntu/
 https://mirrors.egr.msu.edu/ubuntu/
 https://mirrors.gigenet.com/ubuntu/
 https://mirrors.iu13.net/ubuntu/
