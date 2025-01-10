@@ -44,6 +44,14 @@ class TestAptSources(testcommon.TestCase):
         self.assertEqual(section["otherkey"], "othervalue")
         self.assertEqual(str(section), "key: value\notherkey: othervalue\n")
 
+    def testDeb822CommentBlockWithoutEndLine(self):
+        """aptsources: Test sources.list parsing."""
+        section = aptsources._deb822.Section("# a comment\n# another comment")
+
+        self.assertEqual(section.header, " a comment\n another comment\n")
+        # Writing it back out gives us an extra newline at the end
+        self.assertEqual(str(section), "# a comment\n# another comment\n")
+
     def testDeb822MultipleLinesSeparator(self):
         """aptsources: Test sources.list parsing."""
         for separator in "\n\n\n\n", "\n\n\n", "\n\n":

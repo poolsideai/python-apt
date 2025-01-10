@@ -48,7 +48,10 @@ class Section:
             in_section = True
             trimmed_section += line + "\n"
 
-        self.tags = collections.OrderedDict(apt_pkg.TagSection(trimmed_section))
+        if trimmed_section:
+            self.tags = collections.OrderedDict(apt_pkg.TagSection(trimmed_section))
+        else:
+            self.tags = collections.OrderedDict()
         self._case_mapping = {k.casefold(): k for k in self.tags}
         self.header, self.footer = comments
 
