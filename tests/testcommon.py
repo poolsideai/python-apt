@@ -11,6 +11,7 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         self.resetConfig()
+        os.chdir(os.path.dirname(__file__))
 
     def resetConfig(self):
         apt_pkg.config.clear("")

@@ -40,10 +40,6 @@ class MyTestRunner(unittest.runner.TextTestRunner):
 
 
 if __name__ == "__main__":
-    if not os.access("/etc/apt/sources.list", os.R_OK):
-        sys.stdout.write("[tests] Skipping because sources.list is not readable\n")
-        sys.exit(0)
-
     sys.stdout.write("[tests] Running on %s\n" % sys.version.replace("\n", ""))
     dirname = os.path.dirname(__file__)
     if dirname:

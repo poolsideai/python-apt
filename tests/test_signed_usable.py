@@ -76,10 +76,6 @@ class TestSignedUsable(testcommon.TestCase):
         )
 
     def tearDown(self):
-        # this resets the rootdir apt_pkg.config to ensure it does not
-        # "pollute" the later tests
-        apt.cache.Cache(rootdir="/")
-        os.chdir(self.cwd)
         shutil.rmtree(self.chroot_path)
 
         apt.progress.text.AcquireProgress = self.progress

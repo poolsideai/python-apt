@@ -222,6 +222,7 @@ class TestAptCache(testcommon.TestCase):
         apt_pkg.config.set("dir::etc::sourcelist", old_source_list)
         apt_pkg.config.set("dir::etc::sourceparts", old_source_parts)
 
+    @if_sources_list_is_readable
     def test_package_cmp(self):
         cache = apt.Cache(rootdir="/")
         li = []
