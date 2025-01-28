@@ -5,7 +5,6 @@
 # SPDX-License-Identifier: GPL-2.0+
 
 
-import base64
 import os
 import shutil
 import tempfile
@@ -50,16 +49,19 @@ class TestSignedUsable(testcommon.TestCase):
         with open(
             os.path.join(self.chroot_path, "etc/apt/sources.list"), "w"
         ) as sources_list:
-            sources_list.write("deb copy:%s/signed/ /\n" % repo_path)
-            sources_list.write("deb copy:%s/unsigned/ /\n" % repo_path)
-            sources_list.write("deb-src copy:%s/signed/ /\n" % repo_path)
-            sources_list.write("deb-src copy:%s/unsigned/ /\n" % repo_path)
-
-        with open(os.path.join(repo_path, "key.gpg.base64"), "rb") as pubkey64:
-            with open(
-                os.path.join(self.chroot_path, "etc/apt/trusted.gpg"), "wb"
-            ) as tgt:
-                tgt.write(base64.b64decode(pubkey64.read()))
+            key_path = os.path.join(repo_path, "key.asc")
+            sources_list.write(
+                f"deb [signed-by={key_path}] copy:{repo_path}/signed/ /\n"
+            )
+            sources_list.write(
+                f"deb [signed-by={key_path}] copy:{repo_path}/unsigned/ /\n"
+            )
+            sources_list.write(
+                f"deb-src [signed-by={key_path}] copy:{repo_path}/signed/ /\n"
+            )
+            sources_list.write(
+                f"deb-src [signed-by={key_path}] copy:{repo_path}/unsigned/ /\n"
+            )
 
         self.cache = apt.cache.Cache(rootdir=chroot_path)
         apt_pkg.config["Acquire::AllowInsecureRepositories"] = "true"
@@ -361,37 +363,37 @@ class TestSignedUsable(testcommon.TestCase):
             apt.package.UntrustedError,
             ": No trusted hash",
             self.cache["signed-not-usable"].candidate.fetch_binary,
-            **bargs
+            **bargs,
         )
         self.assertRaisesRegex(
             apt.package.UntrustedError,
             ": No trusted hash",
             self.cache["signed-not-usable"].candidate.fetch_source,
-            **sargs
+            **sargs,
         )
         self.assertRaisesRegex(
             apt.package.UntrustedError,
             ": Source",
             self.cache["unsigned-usable"].candidate.fetch_binary,
-            **bargs
+            **bargs,
         )
         self.assertRaisesRegex(
             apt.package.UntrustedError,
             ": Source",
             self.cache["unsigned-usable"].candidate.fetch_source,
-            **sargs
+            **sargs,
         )
         self.assertRaisesRegex(
             apt.package.UntrustedError,
             ": Source",
             self.cache["unsigned-unusable"].candidate.fetch_binary,
-            **bargs
+            **bargs,
         )
         self.assertRaisesRegex(
             apt.package.UntrustedError,
             ": Source",
             self.cache["unsigned-unusable"].candidate.fetch_source,
-            **sargs
+            **sargs,
         )
 
 
