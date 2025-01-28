@@ -177,6 +177,8 @@ class Cache:
         dirs = [
             "/var/lib/dpkg",
             "/etc/apt/",
+            "/etc/apt/apt.conf.d",
+            "/etc/apt/preferences.d",
             "/var/cache/apt/archives/partial",
             "/var/lib/apt/lists/partial",
         ]
