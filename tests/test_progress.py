@@ -33,6 +33,7 @@ class TestProgress(testcommon.TestCase):
         apt_pkg.config.set("Dir::Etc", basedir)
         # TODO: /dev/null is not a dir, perhaps find something better
         apt_pkg.config.set("Dir::Etc::sourceparts", "/dev/null")
+        apt_pkg.config.set("Dir::Etc::preferencesparts", "/dev/null")
         # setup lists dir
         if not os.path.exists("./tmp/partial"):
             os.makedirs("./tmp/partial")

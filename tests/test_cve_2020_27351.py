@@ -21,10 +21,11 @@ import tempfile
 import warnings
 
 import apt_inst
+import testcommon
 
 
 @unittest.skipIf(not os.path.exists("/proc/self/fd"), "no /proc/self/fd available")
-class TestCVE_2020_27351(unittest.TestCase):
+class TestCVE_2020_27351(testcommon.TestCase):
     """test the debfile"""
 
     GOOD_DEB = "data/test_debs/utf8-package_1.0-1_all.deb"

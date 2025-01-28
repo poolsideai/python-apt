@@ -22,6 +22,7 @@ class TestCase(unittest.TestCase):
         os.unsetenv("APT_CONFIG")
         apt_pkg.config["Dir::Etc::main"] = "/dev/null"
         apt_pkg.config["Dir::Etc::parts"] = "/dev/null"
+        apt_pkg.config["APT::Sandbox::User"] = "root"
 
         apt_pkg.init_config()
         apt_pkg.init_system()

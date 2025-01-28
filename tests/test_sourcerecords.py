@@ -32,7 +32,7 @@ class TestSourceRecords(testcommon.TestCase):
         if os.path.exists(rootdir):
             shutil.rmtree(rootdir)
         try:
-            os.makedirs(os.path.join(rootdir, "etc", "apt"))
+            os.makedirs(os.path.join(rootdir, "etc", "apt", "apt.conf.d"))
         except OSError:
             pass
 
