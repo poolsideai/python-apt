@@ -1,3 +1,9 @@
+python-apt (2.9.8) unstable; urgency=medium
+
+  * test_lp659438.py: Remove broken apt.Cache(rootdir="/")
+
+ -- Julian Andres Klode <jak@debian.org>  Tue, 28 Jan 2025 20:52:20 +0100
+
 python-apt (2.9.7) unstable; urgency=medium
 
   [ Julian Andres Klode ]
