@@ -835,10 +835,10 @@ static struct _PyAptPkgAPIStruct API = {
    0,                         // FIXME: sourcerecords_fromcpp
    0,                         // FIXME: sourcerecords_tocpp
    &PyTagFile_Type,           // tagfile_type
-   &PyTagFile_FromCpp,          // tagfile_tocpp
+   0,          // tagfile_tocpp
    &PyTagFile_ToCpp,          // tagfile_tocpp
    &PyTagSection_Type,        // tagsection_type
-   &PyTagSection_FromCpp,       // tagsection_tocpp
+   0,                         // tagsection_tocpp
    &PyTagSection_ToCpp,       // tagsection_tocpp
    &PyVersion_Type,           // version_type
    &PyVersion_FromCpp,          // version_tocpp
