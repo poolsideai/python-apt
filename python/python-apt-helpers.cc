@@ -62,8 +62,8 @@ NEW_FROM(PyPolicy_FromCpp,&PyPolicy_Type,pkgPolicy*)
 NEW_FROM(PyProblemResolver_FromCpp,&PyProblemResolver_Type,pkgProblemResolver*)
 NEW_FROM(PySourceList_FromCpp,&PySourceList_Type,pkgSourceList*)
 //NEW_FROM(PySourceRecords_FromCpp,&PySourceRecords_Type,PkgSrcRecordsStruct)
-NEW_FROM(PyTagFile_FromCpp,&PyTagFile_Type,pkgTagFile)
-NEW_FROM(PyTagSection_FromCpp,&PyTagSection_Type,pkgTagSection)
+//NEW_FROM(PyTagFile_FromCpp,&PyTagFile_Type,pkgTagFile)
+//NEW_FROM(PyTagSection_FromCpp,&PyTagSection_Type,pkgTagSection)
 NEW_FROM(PyVersion_FromCpp,&PyVersion_Type,pkgCache::VerIterator)
 
 #undef NEW_FROM

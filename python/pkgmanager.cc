@@ -220,7 +220,6 @@ public:
 	 }
 	void callReset() { return pkgDPkgPM::Reset(); }
 	bool callConfigure(PkgIterator Pkg) { return pkgDPkgPM::Configure(Pkg); }
-	pkgOrderList *getOrderList() { return pkgPackageManager::List; }
 
         PyPkgManager(pkgDepCache *Cache) : pkgDPkgPM(Cache),pyinst(NULL) {};
 	PyObject *pyinst;
