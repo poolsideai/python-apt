@@ -1,3 +1,9 @@
+python-apt (2.9.9) unstable; urgency=medium
+
+  * Adapt to libapt-pkg7.0 PPA
+
+ -- Julian Andres Klode <jak@debian.org>  Mon, 17 Feb 2025 10:39:47 +0100
+
 python-apt (2.9.8) unstable; urgency=medium
 
   * test_lp659438.py: Remove broken apt.Cache(rootdir="/")
