@@ -1,12 +1,22 @@
+---
+stages:
+  - test
+  - deploy
+  - package
+
 image: debian:unstable
 variables:
   DEBIAN_FRONTEND: noninteractive
+
 pre-commit:
+  stage: test
   script:
     - apt update
     - apt install -q -y pre-commit git
     - pre-commit run -a --show-diff-on-failure
+
 test:
+  stage: test
   script:
     - apt update
     - apt build-dep -q -y ./
@@ -14,6 +24,7 @@ test:
   artifacts:
     paths:
       - build/sphinx/html/
+
 pages:
   stage: deploy
   script:
@@ -23,3 +34,26 @@ pages:
       - public
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+# Additionally run Salsa CI, but only in certain cases
+Salsa CI:
+  stage: package
+  trigger:
+    include: debian/salsa-ci.yml
+    strategy: depend
+  rules:
+    - changes:
+        paths:
+          - debian/**/*
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+
+# If Salsa CI is not running at
+# https://salsa.debian.org/%{project_path}/-/pipelines, ensure that
+# https://salsa.debian.org/%{project_path}/-/settings/ci_cd has in field "CI/CD
+# configuration file" the same filename as this file.
+#
+# If Salsa CI is running, but first job is stuck because the project doesn't
+# have any runners online assigned to it, ensure that
+# https://salsa.debian.org/%{project_path}/-/settings/ci_cd has under "Runners"
+# the setting for "Enable instance runners for this project" enabled.
