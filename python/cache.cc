@@ -418,6 +418,7 @@ PyTypeObject PyCache_Type =
    0,                                   // tp_as_buffer
    (Py_TPFLAGS_DEFAULT |                // tp_flags
     Py_TPFLAGS_BASETYPE |
+    Py_TPFLAGS_MANAGED_WEAKREF |
     Py_TPFLAGS_HAVE_GC),
    doc_PkgCache,                        // tp_doc
    CppTraverse<pkgCache *>,        // tp_traverse
