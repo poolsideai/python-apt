@@ -187,6 +187,8 @@ void CppDealloc(PyObject *iObj)
    #ifdef ALLOC_DEBUG
    std::cerr << "=== DEALLOCATING " << iObj->ob_type->tp_name << "+ ===\n";
    #endif
+   if (iObj->ob_type->tp_flags & Py_TPFLAGS_MANAGED_WEAKREF)
+       PyObject_ClearWeakRefs(iObj);
    if (iObj->ob_type->tp_flags & Py_TPFLAGS_HAVE_GC)
        PyObject_GC_UnTrack(iObj);
    CppPyObject<T> *Obj = (CppPyObject<T> *)iObj;
