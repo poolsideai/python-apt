@@ -1,0 +1,121 @@
+_ChangelogURI: https://master.pureos.net/metadata/pkg/pureos/%s/%s/%s/%s_%s_changelog
+
+Suite: landing
+RepositoryType: deb
+BaseURI: https://repo.pureos.net/pureos/
+MatchURI: repo.pureos.net/pureos
+MirrorsFile: PureOS.mirrors
+_Description: PureOS development
+Component: main
+_CompDescription: Officially supported
+
+Suite: octarine
+RepositoryType: deb
+ParentSuite: landing
+_Description: PureOS experimental
+
+Suite: dawn
+RepositoryType: deb
+BaseURI: https://repo.pureos.net/pureos/
+MatchURI: repo.pureos.net/pureos
+MirrorsFile: PureOS.mirrors
+_Description: PureOS 12
+Component: main
+_CompDescription: Officially supported
+
+Suite: dawn-updates
+RepositoryType: deb
+ParentSuite: dawn
+_Description: PureOS 12 updates
+
+Suite: dawn-proposed-updates
+RepositoryType: deb
+ParentSuite: dawn
+_Description: PureOS 12 proposed updates
+
+Suite: dawn-security
+RepositoryType: deb
+ParentSuite: dawn
+_Description: PureOS 12 security updates
+
+Suite: crimson
+RepositoryType: deb
+BaseURI: https://repo.pureos.net/pureos/
+MatchURI: repo.pureos.net/pureos
+MirrorsFile: PureOS.mirrors
+_Description: PureOS 11
+Component: main
+_CompDescription: Officially supported
+
+Suite: crimson-updates
+RepositoryType: deb
+ParentSuite: crimson
+_Description: PureOS 11 updates
+
+Suite: crimson-proposed-updates
+RepositoryType: deb
+ParentSuite: crimson
+_Description: PureOS 11 proposed updates
+
+Suite: crimson-security
+RepositoryType: deb
+ParentSuite: crimson
+_Description: PureOS 11 security updates
+
+Suite: byzantium
+RepositoryType: deb
+BaseURI: https://repo.pureos.net/pureos/
+MatchURI: repo.pureos.net/pureos
+MirrorsFile: PureOS.mirrors
+_Description: PureOS 10
+Component: main
+_CompDescription: Officially supported
+
+Suite: byzantium-updates
+RepositoryType: deb
+ParentSuite: byzantium
+_Description: PureOS 10 updates
+
+Suite: byzantium-proposed-updates
+RepositoryType: deb
+ParentSuite: byzantium
+_Description: PureOS 10 proposed updates
+
+Suite: byzantium-security
+RepositoryType: deb
+ParentSuite: byzantium
+_Description: PureOS 10 security updates
+
+Suite: amber
+RepositoryType: deb
+BaseURI: https://repo.pureos.net/pureos/
+MatchURI: repo.pureos.net/pureos
+MirrorsFile: PureOS.mirrors
+_Description: PureOS 9
+Component: main
+_CompDescription: Officially supported
+
+Suite: amber-updates
+RepositoryType: deb
+ParentSuite: amber
+_Description: PureOS 9 updates
+
+Suite: amber-proposed-updates
+RepositoryType: deb
+ParentSuite: amber
+_Description: PureOS 9 proposed updates
+
+Suite: amber-security
+RepositoryType: deb
+ParentSuite: amber
+_Description: PureOS 9 security updates
+
+Suite: amber-phone
+RepositoryType: deb
+ParentSuite: amber
+_Description: PureOS 9 for phones
+
+Suite: amber-phone-staging
+RepositoryType: deb
+ParentSuite: amber
+_Description: PureOS 9 for phones - development
